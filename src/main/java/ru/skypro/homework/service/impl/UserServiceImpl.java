@@ -1,28 +1,31 @@
 package ru.skypro.homework.service.impl;
 
-import ru.skypro.homework.dto.Avatar;
-import ru.skypro.homework.dto.Password;
-import ru.skypro.homework.dto.User;
+import org.springframework.web.multipart.MultipartFile;
+import ru.skypro.homework.dto.NewPasswordDto;
+import ru.skypro.homework.dto.UpdateUserDto;
+import ru.skypro.homework.dto.UserDto;
 import ru.skypro.homework.service.UserService;
+
+import java.nio.channels.MulticastChannel;
 
 public class UserServiceImpl implements UserService {
     @Override
-    public String updatePassword(Password password) {
+    public String setPassword(NewPasswordDto newPassword) {
         return null;
     }
 
     @Override
-    public User getAuthUserInfo() {
+    public UserDto getAuthUserInfo() {
         return null;
     }
 
     @Override
-    public User updateAuthUserInfo(User user) {
+    public UpdateUserDto updateAuthUserInfo(UpdateUserDto updateUser) {
         return null;
     }
 
     @Override
-    public Avatar updateAvatar(String avatar) {
+    public MultipartFile updateAvatar(MultipartFile avatar) {
         return null;
     }
 }
