@@ -45,7 +45,7 @@ public class CommentsAdsController {
                             ))})
 
     @GetMapping("/ads/{id}/comments")
-    public ResponseEntity<CommentDto> getComments(@Parameter(description = "ads id") @PathVariable int id) {
+    public ResponseEntity<CommentDto> getComments(@Parameter(description = "ads id") @RequestParam int id) {
 //        return ResponseEntity.ok(this.adsService.findById(id));TODO
         return ResponseEntity.ok(new CommentDto());
     }
@@ -106,8 +106,8 @@ public class CommentsAdsController {
 
                             ))})
     @DeleteMapping("/ads/{adId}/comments/{commentId}")
-    public void deleteComment(@PathVariable int adId, @PathVariable int commentId) {
-//        commentsService.deleteComment(adId,commentId);
+    public void deleteComment(@RequestParam int adId, @RequestParam int commentId) {
+//        commentsService.deleteComment(adId,commentId);TODO
 
     }
     @Operation(summary = "Обновление комментария",
@@ -140,7 +140,7 @@ public class CommentsAdsController {
 
                             ))})
     @PatchMapping("/ads/{adId}/comments/{commentId}")
-    public CommentDto updateComment(@PathVariable int adId, @PathVariable int commentId, @RequestBody String text) {
+    public CommentDto updateComment(@RequestParam int adId, @RequestParam int commentId, @RequestBody String text) {
 //        return commentsService.update(adId, commentId, text);TODO
         return new CommentDto();
     }
