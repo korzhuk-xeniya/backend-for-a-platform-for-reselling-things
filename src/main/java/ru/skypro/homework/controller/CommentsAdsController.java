@@ -21,6 +21,11 @@ public class CommentsAdsController {
 //    private final CommentService commentsService;
 //    private final AdsService adsService;
 
+    /**
+     * @param id id объявления
+     * @return
+     * Получение всех комментариев объявления по id объявления
+     */
     @Operation(summary = "Получение комментариев объявления",
             responses = {
                     @ApiResponse(responseCode = "200",
@@ -49,6 +54,13 @@ public class CommentsAdsController {
 //        return ResponseEntity.ok(this.adsService.findById(id));TODO
         return ResponseEntity.ok(new CommentDto());
     }
+
+    /**
+     * @param id id объявления
+     * @param text текст комментария
+     * @return
+     * Добавление комментария к объявлению
+     */
     @Operation(summary = "Добавление комментария к объявлению",
             responses = {
                     @ApiResponse(responseCode = "200",
@@ -76,6 +88,12 @@ public class CommentsAdsController {
 //        return commentsService.addCommentToAds( id, text);TODO
         return new CommentDto();
     }
+
+    /**
+     * @param adId id объявления
+     * @param commentId id комментария
+     * Удаление комментария
+     */
     @Operation(summary = "Удаление комментария",
             responses = {
                     @ApiResponse(responseCode = "200",
@@ -110,6 +128,13 @@ public class CommentsAdsController {
 //        commentsService.deleteComment(adId,commentId);TODO
 
     }
+
+    /**
+     * @param adId id объявления
+     * @param commentId id комментария
+     * @param text новый текст комментария
+     * @return обновленный комментарий
+     */
     @Operation(summary = "Обновление комментария",
             responses = {
                     @ApiResponse(responseCode = "200",
