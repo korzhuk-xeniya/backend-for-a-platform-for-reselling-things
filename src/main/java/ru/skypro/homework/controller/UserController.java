@@ -9,10 +9,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.NewPasswordDto;
@@ -29,13 +32,14 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/users")
 public class UserController {
 
-//    @Autowired
-//    private final UserService userService;
+    Logger log = LoggerFactory.getLogger(UserController.class);
+
+    //    @Autowired
+    //    private final UserService userService;
     @Autowired
     private final HttpServletRequest request;
     @Autowired
     private final ObjectMapper objectMapper;
-
 
     @Operation(summary = "Обновление пароля")
     @ApiResponses(value = {
@@ -48,9 +52,10 @@ public class UserController {
             @ApiResponse(responseCode = "403", description = "Доступ запрещен")
     })
     @PostMapping("/set_password")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity setPassword(@RequestBody NewPasswordDto newPassword) {
-        String accept = request.getHeader("Accept");
-        return ResponseEntity.ok(null);
+        log.info("Вызван метод обновления пароля");
+        return ResponseEntity.ok(new NewPasswordDto());
 //        return ResponseEntity.ok(userService.setPassword(newPassword));
     }
 
@@ -64,13 +69,12 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован")
     })
     @GetMapping("/me")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<UserDto> getAuthUserInfo() {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            return ResponseEntity.ok(null);
+        log.info("Вызван метод получения информации об авторизованном пользователе");
+        return ResponseEntity.ok(new UserDto());
 //            return ResponseEntity.ok(userService.getAuthUserInfo());
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
     }
 
     @Operation(summary = "Обновление информации об авторизованном пользователе")
@@ -83,13 +87,11 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован")
     })
     @PatchMapping("/me")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity updateAuthUserInfo(@RequestBody UpdateUserDto updateUser) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            return ResponseEntity.ok(null);
+        log.info("Вызван метод изменения информации об авторизованном пользователе");
+        return ResponseEntity.ok(new UpdateUserDto());
 //            return ResponseEntity.ok(userService.updateAuthUserInfo(updateUser));
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     @Operation(summary = "Обновление аватара авторизованного пользователя")
@@ -101,8 +103,9 @@ public class UserController {
                                     schema = @Schema(implementation = MultipartFile.class)))),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован")
     })
-        @PatchMapping("/me/image")
+    @PatchMapping("/me/image")
     public ResponseEntity updateAvatar(@RequestBody MultipartFile avatar) {
+        log.info("Вызван метод обновления аватара");
         String accept = request.getHeader("Accept");
         return ResponseEntity.ok(null);
 //        return ResponseEntity.ok(userService.updateAvatar(avatar));
