@@ -1,5 +1,8 @@
 package ru.skypro.homework.dto;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class UpdateUserDto {
 
     private String firstName;

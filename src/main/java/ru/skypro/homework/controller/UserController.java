@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,9 +28,13 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/users")
 public class UserController {
 
+    @Autowired
     private final UserService userService;
+    @Autowired
     private HttpServletRequest request;
+    @Autowired
     private final ObjectMapper objectMapper;
+
 
     @Operation(summary = "Обновление пароля")
     @ApiResponses(value = {
