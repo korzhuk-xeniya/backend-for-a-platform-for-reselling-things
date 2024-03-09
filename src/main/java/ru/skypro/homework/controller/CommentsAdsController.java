@@ -24,7 +24,7 @@ public class CommentsAdsController {
     /**
      * @param id id объявления
      * @return
-     * Получение всех комментариев объявления по id объявления
+     * все комментарии объявления по id объявления
      */
     @Operation(summary = "Получение комментариев объявления",
             responses = {
@@ -59,7 +59,7 @@ public class CommentsAdsController {
      * @param id id объявления
      * @param text текст комментария
      * @return
-     * Добавление комментария к объявлению
+     * Добавленный комментарий к объявлению
      */
     @Operation(summary = "Добавление комментария к объявлению",
             responses = {
@@ -92,7 +92,6 @@ public class CommentsAdsController {
     /**
      * @param adId id объявления
      * @param commentId id комментария
-     * Удаление комментария
      */
     @Operation(summary = "Удаление комментария",
             responses = {
