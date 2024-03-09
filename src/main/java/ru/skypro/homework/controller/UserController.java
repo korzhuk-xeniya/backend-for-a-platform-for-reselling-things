@@ -23,15 +23,16 @@ import ru.skypro.homework.service.UserService;
 import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
+@CrossOrigin(value = "http://localhost:3000")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
 
+//    @Autowired
+//    private final UserService userService;
     @Autowired
-    private final UserService userService;
-    @Autowired
-    private HttpServletRequest request;
+    private final HttpServletRequest request;
     @Autowired
     private final ObjectMapper objectMapper;
 
@@ -49,7 +50,8 @@ public class UserController {
     @PostMapping("/set_password")
     public ResponseEntity setPassword(@RequestBody NewPasswordDto newPassword) {
         String accept = request.getHeader("Accept");
-        return ResponseEntity.ok(userService.setPassword(newPassword));
+        return ResponseEntity.ok(null);
+//        return ResponseEntity.ok(userService.setPassword(newPassword));
     }
 
     @Operation(summary = "Получение информации об авторизованном пользователе")
@@ -65,7 +67,8 @@ public class UserController {
     public ResponseEntity<UserDto> getAuthUserInfo() {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
-            return ResponseEntity.ok(userService.getAuthUserInfo());
+            return ResponseEntity.ok(null);
+//            return ResponseEntity.ok(userService.getAuthUserInfo());
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
@@ -83,7 +86,8 @@ public class UserController {
     public ResponseEntity updateAuthUserInfo(@RequestBody UpdateUserDto updateUser) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
-            return ResponseEntity.ok(userService.updateAuthUserInfo(updateUser));
+            return ResponseEntity.ok(null);
+//            return ResponseEntity.ok(userService.updateAuthUserInfo(updateUser));
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
@@ -100,7 +104,8 @@ public class UserController {
         @PatchMapping("/me/image")
     public ResponseEntity updateAvatar(@RequestBody MultipartFile avatar) {
         String accept = request.getHeader("Accept");
-        return ResponseEntity.ok(userService.updateAvatar(avatar));
+        return ResponseEntity.ok(null);
+//        return ResponseEntity.ok(userService.updateAvatar(avatar));
     }
 
 
