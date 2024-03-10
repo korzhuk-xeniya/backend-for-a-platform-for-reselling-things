@@ -6,6 +6,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ru.skypro.homework.dto.AdsDto;
+import ru.skypro.homework.dto.CreateOrUpdateAdDto;
+import ru.skypro.homework.dto.ExtendedAdDto;
+import ru.skypro.homework.service.ImageService;
+import ru.skypro.homework.service.impl.ImageServiceImpl;
 
 import java.util.List;
 
@@ -16,44 +21,47 @@ import java.util.List;
 @RequestMapping("/ads")
 public class AdsController {
 
-//private final AdService adService;
-    @GetMapping
-    public ResponseEntity<?> getAllAds() { //List <Ad> вместо ?
+private final ImageService imageService;
+    @GetMapping()
+    public ResponseEntity <AdsDto> getAllAds()
+    {
         return ResponseEntity.ok().build();
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> createAd( //
-//                                       @RequestBody CreateOrUpdateAd adDTO,
-                                       @RequestParam MultipartFile image) {
-         return ResponseEntity.ok().build();
+    public ResponseEntity<CreateOrUpdateAdDto> createAd(@RequestBody CreateOrUpdateAdDto createOrUpdateAdDto)
+//                                                        @RequestParam MultipartFile image)
+        {
+
+        return ResponseEntity.ok(new CreateOrUpdateAdDto());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getInfoAd(@PathVariable int id) {//<ExtendedAd> вместо ?
-        return ResponseEntity.ok().build();
+    public ResponseEntity<ExtendedAdDto> getInfoAd(@PathVariable Integer id) {
+        return ResponseEntity.ok(new ExtendedAdDto());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> removeAd(@PathVariable int id) {//<AdDto> вместо ?
-        return ResponseEntity.ok().build();
+    public void removeAd(@PathVariable Integer id) {
+
     }
 
+
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateInfoAd(@PathVariable int id) //{<CreateOrUpdateAd> вместо ?
+    public ResponseEntity<CreateOrUpdateAdDto> updateInfoAd(@PathVariable Integer id)
     {
          return ResponseEntity.ok().build();
     }
 
     @GetMapping("/me")
-    public ResponseEntity<?> getAllUserAds() {// вместо ?  <List<AdsDto>>
+    public ResponseEntity<AdsDto> getAllUserAds() {
         return ResponseEntity.ok().build();
     }
 
 
     @PatchMapping("/{id}/image")
-    public ResponseEntity<?> updateImageAd( // {вместо ?  <AdDto>
-                                            @PathVariable int id,
+    public ResponseEntity<ExtendedAdDto> updateImageAd(
+                                            @PathVariable Integer id,
                                             @RequestBody MultipartFile image)
     {
         return ResponseEntity.ok().build();
