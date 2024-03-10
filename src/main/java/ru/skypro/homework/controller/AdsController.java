@@ -67,7 +67,6 @@ private final ImageService imageService;
         return ResponseEntity.ok().build();
     }
 
-
 }
 
 
