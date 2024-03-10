@@ -9,5 +9,6 @@ public class Ad {
     private int pk;
     private int price;
     private String title;
+    private String description;
 
 }
