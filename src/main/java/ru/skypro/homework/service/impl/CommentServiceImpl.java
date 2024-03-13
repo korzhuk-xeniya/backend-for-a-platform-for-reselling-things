@@ -2,6 +2,7 @@ package ru.skypro.homework.service.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.skypro.homework.dto.CommentDto;
@@ -12,8 +13,7 @@ import ru.skypro.homework.service.CommentService;
 import java.time.LocalDateTime;
 
 @Service
-@AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class CommentServiceImpl implements CommentService {
     @Override
