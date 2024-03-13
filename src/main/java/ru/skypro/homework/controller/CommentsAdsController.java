@@ -13,14 +13,16 @@ import org.springframework.web.bind.annotation.*;
 import ru.skypro.homework.dto.CommentDto;
 import ru.skypro.homework.dto.Comments;
 import ru.skypro.homework.dto.CreateOrUpdateComment;
-import ru.skypro.homework.service.AuthService;
+import ru.skypro.homework.entity.Comment;
+import ru.skypro.homework.mapper.CommentMapper;
+import ru.skypro.homework.service.impl.CommentServiceImpl;
 
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
 @RequiredArgsConstructor
 public class CommentsAdsController {
-//    private final CommentService commentsService;
+    private final CommentServiceImpl commentsService;
 //    private final AdsService adsService;
 
     /**
@@ -87,8 +89,9 @@ public class CommentsAdsController {
                             ))})
     @PostMapping("/ads/{id}/comments")
     public CommentDto addComment(@RequestParam int id, @RequestBody CreateOrUpdateComment text) {
-//        return commentsService.addCommentToAds( id, text);TODO
-        return new CommentDto();
+        Comment comment = commentsService.addCommentToAds( id, text); //TODO
+      return CommentMapper.INSTANSE.toDTO(comment);
+//        return new CommentDto();
     }
 
     /**
