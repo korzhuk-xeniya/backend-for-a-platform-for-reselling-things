@@ -46,7 +46,7 @@ public class ImageServiceImpl implements ImageService {
             throw new RuntimeException(e);
         }
     }
-
+    @Override
     /**
      * @param imageFile файл с изображением
      * @return файл с изображением в директории
