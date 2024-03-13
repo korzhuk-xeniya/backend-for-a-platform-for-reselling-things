@@ -11,6 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.skypro.homework.dto.CommentDto;
+import ru.skypro.homework.dto.Comments;
+import ru.skypro.homework.dto.CreateOrUpdateComment;
 import ru.skypro.homework.service.AuthService;
 
 @Slf4j
@@ -50,9 +52,9 @@ public class CommentsAdsController {
                             ))})
 
     @GetMapping("/ads/{id}/comments")
-    public ResponseEntity<CommentDto> getComments(@Parameter(description = "ads id") @RequestParam int id) {
+    public ResponseEntity<Comments> getComments(@Parameter(description = "ads id") @RequestParam int id) {
 //        return ResponseEntity.ok(this.adsService.findById(id));TODO
-        return ResponseEntity.ok(new CommentDto());
+        return ResponseEntity.ok(new Comments());
     }
 
     /**
@@ -84,7 +86,7 @@ public class CommentsAdsController {
 
                             ))})
     @PostMapping("/ads/{id}/comments")
-    public CommentDto addComment(@RequestParam int id, @RequestBody String text) {
+    public CommentDto addComment(@RequestParam int id, @RequestBody CreateOrUpdateComment text) {
 //        return commentsService.addCommentToAds( id, text);TODO
         return new CommentDto();
     }
@@ -164,7 +166,7 @@ public class CommentsAdsController {
 
                             ))})
     @PatchMapping("/ads/{adId}/comments/{commentId}")
-    public CommentDto updateComment(@RequestParam int adId, @RequestParam int commentId, @RequestBody String text) {
+    public CommentDto updateComment(@RequestParam int adId, @RequestParam int commentId, @RequestBody CreateOrUpdateComment text) {
 //        return commentsService.update(adId, commentId, text);TODO
         return new CommentDto();
     }
