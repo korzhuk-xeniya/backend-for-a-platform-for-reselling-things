@@ -24,13 +24,11 @@ public class Ads {
     private String title;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id") //TODO или author_id ?
-    private User author;
-    @OneToMany(mappedBy = "???")
-    @ToString.Exclude
+//    private User author;
+//    @OneToMany(mappedBy = "???")
     private List<Image> IMAGES;
-    @OneToMany(mappedBy = "???", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude
-    private List<Comment> comments;
+//    @OneToMany(mappedBy = "???", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Comment> comments;
 
     @Override
     public final boolean equals(Object o) {
