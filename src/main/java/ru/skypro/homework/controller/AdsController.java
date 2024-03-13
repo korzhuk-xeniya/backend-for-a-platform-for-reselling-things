@@ -98,7 +98,6 @@ public class AdsController {
                                                       required = true) Integer id) {
         return ResponseEntity.ok(new AdDto());
     }
-
     @Operation(summary = "Получение объявлений авторизованного пользователя")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
