@@ -129,7 +129,7 @@ public class CommentsAdsController {
                             ))})
     @DeleteMapping("/ads/{adId}/comments/{commentId}")
     public void deleteComment(@RequestParam int adId, @RequestParam int commentId) {
-//        commentsService.deleteComment(adId,commentId);TODO
+        commentsService.deleteComment(adId,commentId);//TODO
 
     }
 
@@ -170,7 +170,7 @@ public class CommentsAdsController {
                             ))})
     @PatchMapping("/ads/{adId}/comments/{commentId}")
     public CommentDto updateComment(@RequestParam int adId, @RequestParam int commentId, @RequestBody CreateOrUpdateComment text) {
-//        return commentsService.update(adId, commentId, text);TODO
-        return new CommentDto();
+        return commentsService.update(adId, commentId, text);//TODO
+//        return new CommentDto();
     }
 }
