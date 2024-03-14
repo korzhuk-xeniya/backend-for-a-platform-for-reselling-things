@@ -22,10 +22,10 @@ public class Ads {
     private Integer price;
     @Column(name = "TITLE")
     private String title;
-//    @ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "user_id") //TODO или author_id ?
-//    private User author;
-//    @OneToMany(mappedBy = "???")
+    @ManyToOne
+    @JoinColumn(name = "user_ID")
+    private User user;
+//    @OneToOne(mappedBy = "???")
 //    private List<Image> images;
 //    @OneToMany(mappedBy = "???", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<Comment> comments;
