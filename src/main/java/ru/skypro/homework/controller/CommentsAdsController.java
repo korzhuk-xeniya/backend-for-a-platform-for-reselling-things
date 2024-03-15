@@ -11,14 +11,18 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.skypro.homework.dto.CommentDto;
-import ru.skypro.homework.service.AuthService;
+import ru.skypro.homework.dto.Comments;
+import ru.skypro.homework.dto.CreateOrUpdateComment;
+import ru.skypro.homework.entity.Comment;
+import ru.skypro.homework.mapper.CommentMapper;
+import ru.skypro.homework.service.impl.CommentServiceImpl;
 
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
 @RequiredArgsConstructor
 public class CommentsAdsController {
-//    private final CommentService commentsService;
+    private final CommentServiceImpl commentsService;
 //    private final AdsService adsService;
 
     /**
@@ -50,9 +54,9 @@ public class CommentsAdsController {
                             ))})
 
     @GetMapping("/ads/{id}/comments")
-    public ResponseEntity<CommentDto> getComments(@Parameter(description = "ads id") @RequestParam int id) {
+    public ResponseEntity<Comments> getComments(@Parameter(description = "ads id") @RequestParam int id) {
 //        return ResponseEntity.ok(this.adsService.findById(id));TODO
-        return ResponseEntity.ok(new CommentDto());
+        return ResponseEntity.ok(new Comments());
     }
 
     /**
@@ -84,9 +88,10 @@ public class CommentsAdsController {
 
                             ))})
     @PostMapping("/ads/{id}/comments")
-    public CommentDto addComment(@RequestParam int id, @RequestBody String text) {
-//        return commentsService.addCommentToAds( id, text);TODO
-        return new CommentDto();
+    public CommentDto addComment(@RequestParam int id, @RequestBody CreateOrUpdateComment text) {
+        Comment comment = commentsService.addCommentToAds( id, text); //TODO
+      return CommentMapper.INSTANSE.toDTO(comment);
+//        return new CommentDto();
     }
 
     /**
@@ -124,7 +129,7 @@ public class CommentsAdsController {
                             ))})
     @DeleteMapping("/ads/{adId}/comments/{commentId}")
     public void deleteComment(@RequestParam int adId, @RequestParam int commentId) {
-//        commentsService.deleteComment(adId,commentId);TODO
+        commentsService.deleteComment(adId,commentId);//TODO
 
     }
 
@@ -164,8 +169,8 @@ public class CommentsAdsController {
 
                             ))})
     @PatchMapping("/ads/{adId}/comments/{commentId}")
-    public CommentDto updateComment(@RequestParam int adId, @RequestParam int commentId, @RequestBody String text) {
-//        return commentsService.update(adId, commentId, text);TODO
-        return new CommentDto();
+    public CommentDto updateComment(@RequestParam int adId, @RequestParam int commentId, @RequestBody CreateOrUpdateComment text) {
+        return commentsService.update(adId, commentId, text);//TODO
+//        return new CommentDto();
     }
 }

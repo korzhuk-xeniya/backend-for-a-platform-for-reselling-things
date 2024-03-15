@@ -20,8 +20,8 @@
 
   <properties>
     <java.version>11</java.version>
+    <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
   </properties>
-
   <dependencies>
     <!--suppress VulnerableLibrariesLocal -->
     <dependency>
@@ -61,6 +61,15 @@
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.liquibase</groupId>
+      <artifactId>liquibase-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.mapstruct</groupId>
+      <artifactId>mapstruct</artifactId>
+      <version>${org.mapstruct.version}</version>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
@@ -107,6 +116,30 @@
           </excludes>
         </configuration>
       </plugin>
+<!--      <plugin>-->
+<!--        <groupId>org.apache.maven.plugins</groupId>-->
+<!--        <artifactId>maven-compiler-plugin</artifactId>-->
+<!--        <version>3.8.1</version>-->
+<!--        <configuration>-->
+<!--          <annotationProcessorPaths>-->
+<!--            &lt;!&ndash; Сначала подключаем Lombok для первичной обработки кода &ndash;&gt;-->
+<!--            <path>-->
+<!--              <groupId>org.projectlombok</groupId>-->
+<!--              <artifactId>lombok</artifactId>-->
+<!--              <version>LATEST_LOMBOK_VERSION</version>-->
+<!--            </path>-->
+<!--            &lt;!&ndash; После Lombok подключаем MapStruct &ndash;&gt;-->
+<!--            <path>-->
+<!--              <groupId>org.mapstruct</groupId>-->
+<!--              <artifactId>mapstruct-processor</artifactId>-->
+<!--              <version>LATEST_MAPSTRUCT_VERSION</version>-->
+<!--            </path>-->
+<!--          </annotationProcessorPaths>-->
+<!--          &lt;!&ndash; Задаем целевую версию Java для обеспечения совместимости &ndash;&gt;-->
+<!--          <source>1.8</source>-->
+<!--          <target>1.8</target>-->
+<!--        </configuration>-->
+<!--      </plugin>-->
     </plugins>
   </build>
 

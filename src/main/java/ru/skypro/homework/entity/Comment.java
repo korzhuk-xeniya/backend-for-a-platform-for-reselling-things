@@ -29,7 +29,7 @@ public class Comment {
 
 //    @JoinColumn(name = "ADS_ID")
 
-    //    @ManyToOne(fetch = FetchType.LAZY)
+//    @ManyToOne(fetch = FetchType.LAZY)
 //    private Ads ads;
 //
 //    @JoinColumn(name = "USER_ID")
