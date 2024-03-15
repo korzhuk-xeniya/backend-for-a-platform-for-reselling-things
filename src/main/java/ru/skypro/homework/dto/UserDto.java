@@ -5,6 +5,7 @@ import lombok.Data;
 import org.springframework.jmx.export.annotation.ManagedAttribute;
 
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Pattern;
 
 @Data
 public class UserDto {
@@ -23,6 +24,7 @@ public class UserDto {
     private String lastName;
 
     @Schema(description = "телефон пользователя")
+    @Pattern(regexp = "\\+7\\s?\\(?\\d{3}\\)?\\s?\\d{3}-?\\d{2}-?\\d{2}")
     private String phone;
 
     @Schema(description = "роль пользователя")

@@ -1,13 +1,13 @@
 package ru.skypro.homework.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-@Service
+@Data
 public class UpdateUserDto {
 
     @Schema(description = "имя пользователя")

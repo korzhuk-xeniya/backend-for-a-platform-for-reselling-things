@@ -39,8 +39,7 @@ public class User {
     private LocalDateTime regDate;
 
     @OneToOne
-    @JoinColumn(name = "id")
-    @Column(name = "AVATAR", nullable = true)
+    @JoinColumn(name = "AVATAR_ID")
     private Image avatar;
 
 }
