@@ -1,9 +1,6 @@
 package ru.skypro.homework.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,8 +9,7 @@ import java.util.Objects;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Table(name = "comment")
 public class Comment {
     @Id
@@ -28,7 +24,6 @@ public class Comment {
     private String text;
 
     @JoinColumn(name = "ADS_ID")
-
     @ManyToOne(fetch = FetchType.LAZY)
     private Ads ads;
 
