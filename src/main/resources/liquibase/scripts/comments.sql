@@ -7,6 +7,6 @@ CREATE TABLE comment
     CREATED_AT TIMESTAMP,
     TEXT        VARCHAR
 
---    ADS_ID references ads (id) on delete set null,
---    USER_ID BIGINT references user (id) on delete set null
+    ADS_ID references ads (id) on delete set null,
+    USER_ID BIGINT references user (id) on delete set null
 );

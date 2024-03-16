@@ -27,14 +27,14 @@ public class Comment {
     @Column(name = "TEXT")
     private String text;
 
-//    @JoinColumn(name = "ADS_ID")
+    @JoinColumn(name = "ADS_ID")
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private Ads ads;
-//
-//    @JoinColumn(name = "USER_ID")
-//    @ManyToOne(fetch = FetchType.EAGER)
-//    private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Ads ads;
+
+    @JoinColumn(name = "USER_ID")
+    @ManyToOne(fetch = FetchType.EAGER)
+    private User user;
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

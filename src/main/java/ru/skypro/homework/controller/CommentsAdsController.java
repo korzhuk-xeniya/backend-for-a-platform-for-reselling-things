@@ -15,6 +15,7 @@ import ru.skypro.homework.dto.Comments;
 import ru.skypro.homework.dto.CreateOrUpdateComment;
 import ru.skypro.homework.entity.Comment;
 import ru.skypro.homework.mapper.CommentMapper;
+import ru.skypro.homework.service.CommentService;
 import ru.skypro.homework.service.impl.CommentServiceImpl;
 
 @Slf4j
@@ -22,7 +23,7 @@ import ru.skypro.homework.service.impl.CommentServiceImpl;
 @RestController
 @RequiredArgsConstructor
 public class CommentsAdsController {
-    private final CommentServiceImpl commentsService;
+    private final CommentService commentsService;
 //    private final AdsService adsService;
 
     /**
@@ -55,8 +56,12 @@ public class CommentsAdsController {
 
     @GetMapping("/ads/{id}/comments")
     public ResponseEntity<Comments> getComments(@Parameter(description = "ads id") @RequestParam int id) {
+        Comments comment = commentsService.getComments(id);
+        if (comment != null) {
+            return ResponseEntity.ok(comment);
+        }
 //        return ResponseEntity.ok(this.adsService.findById(id));TODO
-        return ResponseEntity.ok(new Comments());
+//        return ResponseEntity.ok(new Comments());
     }
 
     /**
