@@ -21,7 +21,7 @@ public interface UserMapper {
     @Mapping(target = "lastName", source = "user.lastName")
     @Mapping(target = "phone", source = "user.phone")
     @Mapping(target = "role", source = "user.role")
-//    @Mapping(target = "image", source = "user.avatar")
+    @Mapping(target = "image", expression = "java(\"/image/\"+user.getId())")
     UserDto userToUserDto(User user);
 
     /**

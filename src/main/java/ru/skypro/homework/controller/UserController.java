@@ -1,6 +1,5 @@
 package ru.skypro.homework.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -11,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,9 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.NewPasswordDto;
 import ru.skypro.homework.dto.UpdateUserDto;
 import ru.skypro.homework.dto.UserDto;
+import ru.skypro.homework.entity.User;
 import ru.skypro.homework.service.UserService;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
@@ -34,12 +30,13 @@ public class UserController {
 
     Logger log = LoggerFactory.getLogger(UserController.class);
 
-    //    @Autowired
-    //    private final UserService userService;
-    @Autowired
-    private final HttpServletRequest request;
-    @Autowired
-    private final ObjectMapper objectMapper;
+    private final UserService userService;
+
+
+//    @Autowired
+//    private final HttpServletRequest request;
+//    @Autowired
+//    private final ObjectMapper objectMapper;
 
     @Operation(summary = "Обновление пароля")
     @ApiResponses(value = {
@@ -106,11 +103,15 @@ public class UserController {
     @PatchMapping("/me/image")
     public ResponseEntity updateAvatar(@RequestBody MultipartFile avatar) {
         log.info("Вызван метод обновления аватара");
-        String accept = request.getHeader("Accept");
+//        String accept = request.getHeader("Accept");
         return ResponseEntity.ok(null);
 //        return ResponseEntity.ok(userService.updateAvatar(avatar));
     }
 
+    @GetMapping("/image/{id}")
+    public String getImageByUserId(@PathVariable Integer userId) {
+        return userService.getImageByUserId(userId);
+    }
 
     /**
      * Проверка является ли пользователь авторизованным

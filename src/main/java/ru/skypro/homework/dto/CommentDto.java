@@ -1,6 +1,7 @@
 package ru.skypro.homework.dto;
 
 import lombok.Data;
+import net.bytebuddy.asm.Advice;
 
 import java.time.LocalDateTime;
 
@@ -9,7 +10,7 @@ public class CommentDto {
     private Integer author;
     private String authorImage;
     private String authorFirstName;
-    private Long createdAt;
+    private LocalDateTime createdAt;
     private Integer pk;
     private String text;
 }
