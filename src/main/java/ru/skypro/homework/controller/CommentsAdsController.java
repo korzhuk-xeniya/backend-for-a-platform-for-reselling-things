@@ -9,26 +9,29 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.skypro.homework.dto.CommentDto;
 import ru.skypro.homework.dto.Comments;
 import ru.skypro.homework.dto.CreateOrUpdateComment;
 import ru.skypro.homework.entity.Comment;
 import ru.skypro.homework.mapper.CommentMapper;
+import ru.skypro.homework.service.CommentService;
 import ru.skypro.homework.service.impl.CommentServiceImpl;
+
+import java.util.List;
 
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
 @RequiredArgsConstructor
 public class CommentsAdsController {
-    private final CommentServiceImpl commentsService;
+    private final CommentService commentsService;
 //    private final AdsService adsService;
 
     /**
      * @param id id объявления
-     * @return
-     * все комментарии объявления по id объявления
+     * @return все комментарии объявления по id объявления
      */
     @Operation(summary = "Получение комментариев объявления",
             responses = {
@@ -55,15 +58,14 @@ public class CommentsAdsController {
 
     @GetMapping("/ads/{id}/comments")
     public ResponseEntity<Comments> getComments(@Parameter(description = "ads id") @RequestParam int id) {
-//        return ResponseEntity.ok(this.adsService.findById(id));TODO
-        return ResponseEntity.ok(new Comments());
+        List<Comment> comment = commentsService.getComments(id);
+        return ResponseEntity.ok(CommentMapper.INSTANSE.toCommentsDTO(comment.size(), comment));
     }
 
     /**
-     * @param id id объявления
+     * @param id   id объявления
      * @param text текст комментария
-     * @return
-     * Добавленный комментарий к объявлению
+     * @return Добавленный комментарий к объявлению
      */
     @Operation(summary = "Добавление комментария к объявлению",
             responses = {
@@ -89,13 +91,13 @@ public class CommentsAdsController {
                             ))})
     @PostMapping("/ads/{id}/comments")
     public CommentDto addComment(@RequestParam int id, @RequestBody CreateOrUpdateComment text) {
-        Comment comment = commentsService.addCommentToAds( id, text); //TODO
-      return CommentMapper.INSTANSE.toDTO(comment);
-//        return new CommentDto();
+        Comment comment = commentsService.addCommentToAds(id, text); //TODO
+        return CommentMapper.INSTANSE.toDTO(comment);
+
     }
 
     /**
-     * @param adId id объявления
+     * @param adId      id объявления
      * @param commentId id комментария
      */
     @Operation(summary = "Удаление комментария",
@@ -128,15 +130,15 @@ public class CommentsAdsController {
 
                             ))})
     @DeleteMapping("/ads/{adId}/comments/{commentId}")
-    public void deleteComment(@RequestParam int adId, @RequestParam int commentId) {
-        commentsService.deleteComment(adId,commentId);//TODO
+    public void deleteComment(@RequestParam int adId, @RequestParam int commentId, Authentication authentication) {
+        commentsService.deleteComment(adId, commentId, authentication);
 
     }
 
     /**
-     * @param adId id объявления
+     * @param adId      id объявления
      * @param commentId id комментария
-     * @param text новый текст комментария
+     * @param text      новый текст комментария
      * @return обновленный комментарий
      */
     @Operation(summary = "Обновление комментария",
@@ -169,8 +171,10 @@ public class CommentsAdsController {
 
                             ))})
     @PatchMapping("/ads/{adId}/comments/{commentId}")
-    public CommentDto updateComment(@RequestParam int adId, @RequestParam int commentId, @RequestBody CreateOrUpdateComment text) {
-        return commentsService.update(adId, commentId, text);//TODO
-//        return new CommentDto();
+    public ResponseEntity<Comment> updateComment(@RequestParam int adId, @RequestParam int commentId,
+                                    @RequestBody CreateOrUpdateComment text,
+                                    Authentication authentication) {
+        return ResponseEntity.ok(commentsService.update(adId, commentId, text,authentication));
+
     }
 }
