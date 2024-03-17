@@ -34,7 +34,8 @@ public class CommentServiceImpl implements CommentService {
      * Добавляет комментарий к объявлению
      */
     @Override
-    public Comment addCommentToAds(int id, CreateOrUpdateComment text) {
+    public Comment addCommentToAds(int id, CreateOrUpdateComment text, Authentication authentication) {
+        log.info("Был вызван метод для добавления комментария к объявлению{},{},{}",id,text,authentication);
         User user = userRepository.findUserByEmail(SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getName()).orElseThrow();
@@ -54,6 +55,7 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     public boolean deleteComment(int adId, int commentId, Authentication authentication) {
+        log.info("Был вызван метод для удаления комментария к объявлению{},{},{}",adId,commentId,authentication);
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow();
         User commentOwner = comment.getUser();
@@ -74,6 +76,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment update(int adId, int commentId, CreateOrUpdateComment text, Authentication authentication) {
+        log.info("Был вызван метод для обновления комментария к объявлению{},{},{}",adId,commentId,authentication);
         User user = userRepository.findUserByEmail(SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getName()).orElseThrow();
@@ -107,6 +110,7 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     public List<Comment> getComments(int id) {
+        log.info("Был вызван метод для получения всех комментариев объявления{}",id);
         List<Comment> comments = commentRepository.findAllByAdsId(id);
         return comments;
     }
