@@ -3,6 +3,7 @@ package ru.skypro.homework.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -18,6 +19,7 @@ public class Comment {
     private Integer id;
 
     @Column(name = "CREATED_AT")
+//    @PastOrPresent
     private LocalDateTime createdAt;
 
     @Column(name = "TEXT")
