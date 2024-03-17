@@ -9,6 +9,5 @@ CREATE TABLE IMAGE
     TEXT        VARCHAR not null,
     FILE_SIZE BIGINT not null,
     MEDIA_TYPE VARCHAR not null
---    ADS_ID references ads (id) on delete set null,
---    USER_ID BIGINT references user (id) on delete set null
+
 );

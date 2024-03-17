@@ -22,27 +22,31 @@ public class Ads {
     private Integer price;
     @Column(name = "TITLE")
     private String title;
+
+
+
     @ManyToOne
-    @JoinColumn(name = "user_ID")
+    @JoinColumn(name = "USER_ID")
     private User user;
-//    @OneToOne(name = "photo_ID)
-//    private Image image;
-//    @OneToMany(mappedBy = "???", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Comment> comments;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "IMAGE_ID")
+    private Image image;
+
+//    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+//    private List<Comment> adsCommentList;
+
 
     @Override
-    public final boolean equals(Object o) {
+    public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null) return false;
-        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
-        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
-        if (thisEffectiveClass != oEffectiveClass) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Ads ads = (Ads) o;
-        return getId() != null && Objects.equals(getId(), ads.getId());
+        return Objects.equals(id, ads.id) && Objects.equals(price, ads.price) && Objects.equals(title, ads.title) && Objects.equals(user, ads.user) && Objects.equals(image, ads.image);
     }
 
     @Override
-    public final int hashCode() {
-        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    public int hashCode() {
+        return Objects.hash(id, price, title, user, image);
     }
 }

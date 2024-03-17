@@ -3,14 +3,14 @@ package ru.skypro.homework.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.PastOrPresent;
+
 import java.time.LocalDateTime;
-import java.util.Objects;
+
 
 @Entity
-@Getter
-@Setter
-@RequiredArgsConstructor
+@Data
+
+
 @Table(name = "comment")
 public class Comment {
     @Id
@@ -19,42 +19,20 @@ public class Comment {
     private Integer id;
 
     @Column(name = "CREATED_AT")
-//    @PastOrPresent
+
     private LocalDateTime createdAt;
 
     @Column(name = "TEXT")
     private String text;
-
+    @ManyToOne
     @JoinColumn(name = "ADS_ID")
-    @ManyToOne(fetch = FetchType.LAZY)
     private Ads ads;
-
+    @ManyToOne
     @JoinColumn(name = "USER_ID")
-    @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Comment comment = (Comment) o;
-        return Objects.equals(id, comment.id) && Objects.equals(createdAt, comment.createdAt) && Objects.equals(text, comment.text);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, createdAt, text);
-    }
-
-    @Override
-    public String toString() {
-        return "Comment{" +
-                "id=" + id +
-                ", createdAt=" + createdAt +
-                ", text='" + text + '\'' +
-                '}';
-    }
 
 
 }

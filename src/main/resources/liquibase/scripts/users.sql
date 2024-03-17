@@ -8,8 +8,8 @@ CREATE TABLE users
     FIRST_NAME  VARCHAR,
     LAST_NAME   VARCHAR,
     PHONE       VARCHAR,
-    ROLE        VARCHAR,
+    ROLE        INTEGER,
     PASSWORD    VARCHAR,
-    REG_DATE    DATE,
+    REG_DATE    TIMESTAMP,
     AVATAR_ID   INTEGER references image (id) on delete set null
 );
