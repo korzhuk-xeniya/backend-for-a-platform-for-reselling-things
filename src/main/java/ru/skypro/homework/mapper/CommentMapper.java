@@ -8,7 +8,11 @@ import ru.skypro.homework.dto.Comments;
 import ru.skypro.homework.dto.CreateOrUpdateComment;
 import ru.skypro.homework.entity.Comment;
 
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
+
+import static liquibase.repackaged.net.sf.jsqlparser.parser.feature.Feature.comment;
 
 @Mapper(componentModel = "spring")
 public interface CommentMapper
