@@ -25,8 +25,8 @@ public class Ads {
     @ManyToOne
     @JoinColumn(name = "user_ID")
     private User user;
-//    @OneToOne(mappedBy = "???")
-//    private List<Image> images;
+//    @OneToOne(name = "photo_ID)
+//    private Image image;
 //    @OneToMany(mappedBy = "???", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<Comment> comments;
 
