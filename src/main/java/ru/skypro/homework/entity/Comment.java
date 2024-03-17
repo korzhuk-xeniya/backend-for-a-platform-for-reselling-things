@@ -30,6 +30,8 @@ public class Comment {
     @JoinColumn(name = "USER_ID")
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

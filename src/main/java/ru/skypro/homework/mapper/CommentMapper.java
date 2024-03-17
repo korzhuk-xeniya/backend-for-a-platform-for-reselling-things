@@ -17,9 +17,9 @@ public interface CommentMapper
     @Mapping(source = "id", target = "pk")
     @Mapping(source = "user.id", target = "author")
     @Mapping(source = "user.firstName", target = "authorFirstName")
-    @Mapping(source = "createdAt", target = "createdAt", qualifiedByName = "localDateTimeToLong")
-    @Mapping(source = "user.image.url", target = "authorImage")
+    @Mapping(source = "createdAt", target = "createdAt", dateFormat = "yyyy-MM-dd HH:mm")
+//    @Mapping(source = "user.image.url", target = "authorImage")
     CommentDto toDTO(Comment comment);
-    Comments toCommentsDTO(int count, List<Comment> resultComments);
+    Comments toCommentsDTO(Integer count, List<Comment> resultComments);
     CreateOrUpdateComment toDTO3(Comment comment);
 }
