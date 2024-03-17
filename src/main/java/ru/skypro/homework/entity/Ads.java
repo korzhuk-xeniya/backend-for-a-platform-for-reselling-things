@@ -8,10 +8,11 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Getter
-@Setter
-@ToString
-@RequiredArgsConstructor
+@Data
+//@Getter
+//@Setter
+//@ToString
+//@RequiredArgsConstructor
 @Table(name = "ADS")
 public class Ads {
     @Id

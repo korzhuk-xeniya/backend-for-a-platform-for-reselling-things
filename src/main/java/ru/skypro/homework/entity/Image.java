@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.nio.file.Path;
 import java.util.Objects;
 
 @Entity
@@ -27,7 +28,13 @@ public class Image {
 
     @Column(name = "MEDIA_TYPE", nullable = false)
     private String mediaType;
+    public Path getPath() {
+        return Path.of(this.filePath);
+    }
 
+    public String getUrl() {
+        return String.format("/%s/%d", getPath().getParent(), getId());
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
