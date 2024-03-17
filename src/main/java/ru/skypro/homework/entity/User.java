@@ -1,13 +1,16 @@
 package ru.skypro.homework.entity;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 import ru.skypro.homework.dto.Role;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Entity
 @Data
+@Table(name = "users")
 public class User {
 
     @Id
@@ -33,17 +36,11 @@ public class User {
     @Column(name = "PASSWORD", nullable = false)
     private String password;
 
-//    @Column(name = "REG_DATE", nullable = false)
-//    private LocalDateTime regDate;
+    @Column(name = "REG_DATE", nullable = false)
+    private LocalDateTime regDate;
 
-//    @OneToOne
-//    @JoinColumn(name = "id")
-//    @Column(name = "AVATAR", nullable = false)
-//    private Image avatar;
-
-//    @OneToMany
-//    @JoinColumn(name = "ID")
-//    @Column(name = "ADS", nullable = false)
-//    private List<> ads;
+    @OneToOne
+    @JoinColumn(name = "AVATAR_ID")
+    private Image avatar;
 
 }

@@ -14,12 +14,12 @@ import java.util.List;
 public interface CommentMapper
 {
     CommentMapper INSTANSE = Mappers.getMapper(CommentMapper.class);
-//    @Mapping(source = "id", target = "pk")
-//    @Mapping(source = "user.id", target = "author")
-//    @Mapping(source = "user.firstName", target = "authorFirstName")
-//    @Mapping(source = "createdAt", target = "createdAt", qualifiedByName = "localDateTimeToLong")
+    @Mapping(source = "id", target = "pk")
+    @Mapping(source = "user.id", target = "author")
+    @Mapping(source = "user.firstName", target = "authorFirstName")
+    @Mapping(source = "createdAt", target = "createdAt")
 //    @Mapping(source = "user.image.url", target = "authorImage")
     CommentDto toDTO(Comment comment);
-    Comments toCommentsDTO(int count, List<Comment> resultComments);
+    Comments toCommentsDTO(Integer count, List<Comment> resultComments);
     CreateOrUpdateComment toDTO3(Comment comment);
 }
