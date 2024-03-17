@@ -10,7 +10,7 @@ import ru.skypro.homework.entity.User;
 public interface UserMapper {
 
     /**
-     * Маппинг из User в UserDto.
+     * User to UserDto.
      *
      * @param user
      * @return UserDto
@@ -21,11 +21,11 @@ public interface UserMapper {
     @Mapping(target = "lastName", source = "user.lastName")
     @Mapping(target = "phone", source = "user.phone")
     @Mapping(target = "role", source = "user.role")
-//    @Mapping(target = "image", source = "user.avatar") // TODO
+//    @Mapping(target = "image", source = "user.avatar")
     UserDto userToUserDto(User user);
 
     /**
-     * Маппинг из UserDto в User (обратный).
+     * UserDro to User.
      *
      * @param userDto
      * @return User
@@ -36,11 +36,11 @@ public interface UserMapper {
     @Mapping(target = "lastName", source = "userDto.lastName")
     @Mapping(target = "phone", source = "userDto.phone")
     @Mapping(target = "role", source = "userDto.role")
-//    @Mapping(target = "image", source = "userDto") //TODO
+//    @Mapping(target = "image", source = "userDto")
     User userDtoToUser(UserDto userDto);
 
     /**
-     * Маппинг из User в UpdateUserDto.
+     * User to UpdateUserDto.
      *
      * @param user
      * @return UpdateUserDto
@@ -51,7 +51,7 @@ public interface UserMapper {
     UpdateUserDto userToUpdateUserDto(User user);
 
     /**
-     * Маппинг из UserDto в User (обратный).
+     * UserDro to User.
      *
      * @param updateUserDto
      * @return User
