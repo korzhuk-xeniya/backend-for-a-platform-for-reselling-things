@@ -8,7 +8,9 @@ import ru.skypro.homework.entity.Comment;
 import java.util.List;
 
 public interface CommentService {
-    Comment addCommentToAds(int id, CreateOrUpdateComment text);
+
+
+    Comment addCommentToAds(int id, CreateOrUpdateComment text, Authentication authentication);
 
     boolean deleteComment(int adId, int commentId, Authentication authentication);
 

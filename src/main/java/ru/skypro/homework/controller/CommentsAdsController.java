@@ -90,8 +90,9 @@ public class CommentsAdsController {
 
                             ))})
     @PostMapping("/ads/{id}/comments")
-    public CommentDto addComment(@RequestParam int id, @RequestBody CreateOrUpdateComment text) {
-        Comment comment = commentsService.addCommentToAds(id, text); //TODO
+    public CommentDto addComment(@RequestParam int id, @RequestBody CreateOrUpdateComment text,
+                                 Authentication authentication) {
+        Comment comment = commentsService.addCommentToAds(id, text,authentication); //TODO
         return CommentMapper.INSTANSE.toDTO(comment);
 
     }
