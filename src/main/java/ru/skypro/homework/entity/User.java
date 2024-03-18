@@ -6,6 +6,7 @@ import ru.skypro.homework.dto.Role;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity
@@ -31,13 +32,14 @@ public class User {
     private String phone;
 
     @Column(name = "ROLE", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @Column(name = "PASSWORD", nullable = false)
     private String password;
 
     @Column(name = "REG_DATE", nullable = false)
-    private LocalDateTime regDate;
+    private Timestamp regDate;
 
     @OneToOne
     @JoinColumn(name = "AVATAR_ID")
