@@ -9,10 +9,6 @@ import java.util.Objects;
 
 @Entity
 @Data
-//@Getter
-//@Setter
-//@ToString
-//@RequiredArgsConstructor
 @Table(name = "ADS")
 public class Ads {
     @Id
@@ -23,7 +19,8 @@ public class Ads {
     private Integer price;
     @Column(name = "TITLE")
     private String title;
-
+    @Column(name = "DESCRIPTION")
+    private String description;
 
 
     @ManyToOne

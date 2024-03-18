@@ -22,10 +22,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class CommentServiceImpl implements CommentService {
-    private CommentRepository commentRepository;
-    private AdsRepository adsRepository;
-    private UserRepository userRepository;
-    private UserOrAdminService userOrAdminService;
+    private final CommentRepository commentRepository;
+    private final AdsRepository adsRepository;
+    private final UserRepository userRepository;
+    private final UserOrAdminService userOrAdminService;
 
     /**
      * @param id id объявления
@@ -111,7 +111,6 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<Comment> getComments(int id) {
         log.info("Был вызван метод для получения всех комментариев объявления{}",id);
-        List<Comment> comments = commentRepository.findAllByAdsId(id);
-        return comments;
+        return commentRepository.findAllByAdsId(id);
     }
 }

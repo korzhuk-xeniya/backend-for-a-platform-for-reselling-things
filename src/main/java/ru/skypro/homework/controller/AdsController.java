@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -22,6 +23,7 @@ import ru.skypro.homework.service.ImageService;
 
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
@@ -33,6 +35,7 @@ public class AdsController {
 
     private final ImageService imageService;
     private final AdsService adsService;
+    private final AdsMapper adsMapper;
 
     @Operation(summary = "Получение всех объявлений")
     @ApiResponse(responseCode = "200",
@@ -43,7 +46,7 @@ public class AdsController {
     @GetMapping()
     public ResponseEntity<AdsDto> getAllAds() {
         log.info("Запрос всех обьявлений");
-        return ResponseEntity.ok(AdsMapper.INSTANSE.listAdsToAdsDto(adsService.getAllAds().size(), adsService.getAllAds()));
+        return ResponseEntity.ok(adsMapper.listAdsToAdsDto(adsService.getAllAds().size(), adsService.getAllAds()));
         //        return ResponseEntity.ok().build();
     }
 
@@ -57,8 +60,9 @@ public class AdsController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<AdDto> addAd(@Valid @RequestPart(name = "properties") CreateOrUpdateAdDto createOrUpdateAdDto,
                                        @RequestPart(name = "image", required = false) MultipartFile file,
-                                       Authentication authentication) {
-        return ResponseEntity.ok(AdsMapper.INSTANSE.adsToAdsDto(adsService.saveAd(createOrUpdateAdDto, authentication.getName(), file)));
+                                       Authentication authentication) throws IOException {
+        log.info("Добавление объявления");
+        return ResponseEntity.ok(adsMapper.adsToAdsDto(adsService.saveAd(createOrUpdateAdDto, authentication.getName(), file)));
     }
 
 
@@ -75,7 +79,8 @@ public class AdsController {
     public ResponseEntity<ExtendedAdDto> getInfoAd(@PathVariable
                                                    @Parameter(description = "id объявления",
                                                            required = true) Integer id) {
-        return ResponseEntity.ok(new ExtendedAdDto());
+        log.info("Получение информации об объявлении по id");
+        return ResponseEntity.ok(adsMapper.toExtendedAdDto(adsService.getAd(id)));
     }
 
     @Operation(summary = "Удаление объявления")
@@ -86,8 +91,13 @@ public class AdsController {
             @ApiResponse(responseCode = "404", description = "Not found")
     })
     @DeleteMapping("/{id}")
-    public void removeAd(@PathVariable @Parameter(description = "id объявления", required = true) Integer id) {
-
+    public ResponseEntity<Void> removeAd(@PathVariable @Parameter(description = "id объявления",
+            required = true) Integer id, Authentication authentication) {
+        log.info("Удаление объявления по id");
+        if (adsService.removeAd(authentication.getName(), id)) {
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     @Operation(summary = "Обновление информации об объявлении")
@@ -103,8 +113,13 @@ public class AdsController {
     @PatchMapping("/{id}")
     public ResponseEntity<AdDto> updateInfoAd(@PathVariable
                                               @Parameter(description = "id объявления",
-                                                      required = true) Integer id) {
-        return ResponseEntity.ok(new AdDto());
+                                                      required = true) Integer id, Authentication authentication,
+                                              @RequestBody CreateOrUpdateAdDto createOrUpdateAdDto) {
+        AdDto adDto = adsMapper.adsToAdsDto(adsService.updateAds(id, createOrUpdateAdDto, authentication.getName()));
+        if (adDto != null) {
+            return ResponseEntity.ok(adDto);
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     @Operation(summary = "Получение объявлений авторизованного пользователя")

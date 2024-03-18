@@ -28,6 +28,7 @@ import java.util.List;
 public class CommentsAdsController {
     private final CommentService commentsService;
 //    private final AdsService adsService;
+    private final CommentMapper commentMapper;
 
     /**
      * @param id id объявления
@@ -59,7 +60,7 @@ public class CommentsAdsController {
     @GetMapping("/ads/{id}/comments")
     public ResponseEntity<Comments> getComments(@Parameter(description = "ads id") @RequestParam int id) {
         List<Comment> comment = commentsService.getComments(id);
-        return ResponseEntity.ok(CommentMapper.INSTANSE.toCommentsDTO(comment.size(), comment));
+        return ResponseEntity.ok(commentMapper.toCommentsDTO(comment.size(), comment));
     }
 
     /**
@@ -93,7 +94,7 @@ public class CommentsAdsController {
     public CommentDto addComment(@RequestParam int id, @RequestBody CreateOrUpdateComment text,
                                  Authentication authentication) {
         Comment comment = commentsService.addCommentToAds(id, text,authentication); //TODO
-        return CommentMapper.INSTANSE.toDTO(comment);
+        return commentMapper.toDTO(comment);
 
     }
 
