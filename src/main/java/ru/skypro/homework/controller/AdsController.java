@@ -16,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.*;
+import ru.skypro.homework.mapper.AdsMapper;
 import ru.skypro.homework.service.AdsService;
 import ru.skypro.homework.service.ImageService;
 
@@ -42,7 +43,7 @@ public class AdsController {
     @GetMapping()
     public ResponseEntity<AdsDto> getAllAds() {
         log.info("Запрос всех обьявлений");
-        return ResponseEntity.ok(AdsMapper.listAdsToAdsDto(adsService.getAllAds().size(), adsService.getAllAds()));
+        return ResponseEntity.ok(AdsMapper.INSTANSE.listAdsToAdsDto(adsService.getAllAds().size(), adsService.getAllAds()));
         //        return ResponseEntity.ok().build();
     }
 
@@ -57,7 +58,7 @@ public class AdsController {
     public ResponseEntity<AdDto> addAd(@Valid @RequestPart(name = "properties") CreateOrUpdateAdDto createOrUpdateAdDto,
                                        @RequestPart(name = "image", required = false) MultipartFile file,
                                        Authentication authentication) {
-        return ResponseEntity.ok(AdsMapper.adsToAdsDto(adsService.saveAd(createOrUpdateAdDto, authentication.getName(), file)));
+        return ResponseEntity.ok(AdsMapper.INSTANSE.adsToAdsDto(adsService.saveAd(createOrUpdateAdDto, authentication.getName(), file)));
     }
 
 

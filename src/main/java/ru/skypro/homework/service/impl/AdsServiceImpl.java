@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.CreateOrUpdateAdDto;
 import ru.skypro.homework.entity.Ads;
 import ru.skypro.homework.entity.Image;
+import ru.skypro.homework.mapper.AdsMapper;
 import ru.skypro.homework.repository.AdsRepository;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.AdsService;
@@ -32,9 +33,9 @@ public class AdsServiceImpl implements AdsService {
     }
 
     @Override
-    public Object saveAd(CreateOrUpdateAdDto createOrUpdateAdDto, String email, MultipartFile imageFile) {
+    public Ads saveAd(CreateOrUpdateAdDto createOrUpdateAdDto, String email, MultipartFile imageFile) {
         log.info("запустился метод saveAd.");
-        Ads saveAds = AdsMapper.adsDtoToAds(createOrUpdateAdDto);
+        Ads saveAds = AdsMapper.INSTANSE.adsDtoToAds(createOrUpdateAdDto);
         saveAds.setUser(userRepository.findUserByEmail(email).orElseThrow());
         Image image;
         try {
