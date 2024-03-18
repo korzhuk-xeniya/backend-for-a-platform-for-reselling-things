@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.NewPasswordDto;
@@ -52,10 +53,10 @@ public class UserController {
     })
     @PostMapping("/set_password")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity setPassword(@RequestBody NewPasswordDto newPassword) {
+    public ResponseEntity setPassword(@RequestBody NewPasswordDto newPassword, Authentication authentication) {
         log.info("Вызван метод обновления пароля");
-        return ResponseEntity.ok(new NewPasswordDto());
-//        return ResponseEntity.ok(userService.setPassword(newPassword));
+//        return ResponseEntity.ok(new NewPasswordDto());
+        return ResponseEntity.ok(userService.setPassword(newPassword, authentication));
     }
 
     @Operation(summary = "Получение информации об авторизованном пользователе")
