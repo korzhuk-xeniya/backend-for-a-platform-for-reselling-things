@@ -32,16 +32,7 @@ public interface AdsMapper {
 
     void updateAdsFromCreateOrUpdateAdDto(CreateOrUpdateAdDto createOrUpdateAdDto,  @MappingTarget Ads ads);
 
-//    @Mapping(source = "author", target = "user.id")
-//    @Mapping(source = "pk", target = "id")
-//    Ads CreateOrUpdateAdDtoToAds(AdDto adDto);
-//    @Mapping(source = "author.firstName", target = "authorFirstName")
-//    @Mapping(source = "author.lastName", target = "authorLastName")
-//    @Mapping(source = "author.username", target = "email")
-//    @Mapping(source = "author.phone", target = "phone")
-//    @Mapping(source = "id", target = "pk")
-//    @Mapping(source = "images", target = "image")
-//    FullAdsDto adsToFullAdsDto(Ads ads);
+
 
 
     }
