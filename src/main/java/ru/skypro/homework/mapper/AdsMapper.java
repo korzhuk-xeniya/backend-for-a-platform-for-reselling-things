@@ -1,29 +1,44 @@
 package ru.skypro.homework.mapper;
 import org.mapstruct.Mapper;
-import org.springframework.web.bind.annotation.Mapping;
+
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 import ru.skypro.homework.dto.AdDto;
-import ru.skypro.homework.dto.AdsDto;
 import ru.skypro.homework.entity.Ads;
+import ru.skypro.homework.entity.Image;
 
 
-@Mapper(componentModel = "spring")
+@Mapper
 public interface AdsMapper {
-    @Mapping(source = "author.id", target = "author")
-    @Mapping(source = "id", target = "pk")
-    @Mapping(source = "images", target = "image")
-    AdsDto adsToAdsDto(Ads ads);
+    @Named("IMAGE")
+    default String IMAGE(Image image) {
+        return image.getFilePath();
 
-    @Mapping(source = "author", target = "author.id")
-    @Mapping(source = "pk", target = "id")
-    Ads adsDtoToAds(AdsDto adsDto);
-    @Mapping(source = "author.firstName", target = "authorFirstName")
-    @Mapping(source = "author.lastName", target = "authorLastName")
-    @Mapping(source = "author.username", target = "email")
-    @Mapping(source = "author.phone", target = "phone")
+    }
+
     @Mapping(source = "id", target = "pk")
-    @Mapping(source = "images", target = "image")
-    FullAdsDto adsToFullAdsDto(Ads ads);
+    @Mapping(source = "price", target = "price")
+    @Mapping(source = "title", target = "title")
+    @Mapping(source = "image", target = "image", qualifiedByName = "IMAGE")
+    @Mapping(source = "user.id", target = "author")
+    AdDto adToAdsDto(Ads ads);
+
 
 
     }
+
+
+//    private Integer author;
+//    private String image;
+//    private Integer pk;
+//    private Integer price;
+//    private String title;
+//
+//    private Integer id;
+//    private Integer price;
+//    private String title;
+//    private User user;
+//    private Image image;
+//
+//    }
 

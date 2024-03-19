@@ -51,16 +51,10 @@
       <groupId>org.liquibase</groupId>
       <artifactId>liquibase-core</artifactId>
     </dependency>
-<!--    <dependency>-->
-<!--      <groupId>org.mapstruct</groupId>-->
-<!--      <artifactId>mapstruct</artifactId>-->
-<!--      <version>${org.mapstruct.version}</version>-->
-<!--    </dependency>-->
     <dependency>
       <groupId>org.mapstruct</groupId>
       <artifactId>mapstruct</artifactId>
-      <version>1.4.2.Final</version>
-      <scope>provided</scope>
+      <version>1.6.0.Beta1</version>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
@@ -94,8 +88,7 @@
     <dependency>
       <groupId>org.mapstruct</groupId>
       <artifactId>mapstruct-processor</artifactId>
-      <version>1.4.2.Final</version>
-      <scope>provided</scope>
+      <version>1.6.0.Beta1</version>
     </dependency>
   </dependencies>
 
@@ -113,30 +106,6 @@
           </excludes>
         </configuration>
       </plugin>
-<!--      <plugin>-->
-<!--        <groupId>org.apache.maven.plugins</groupId>-->
-<!--        <artifactId>maven-compiler-plugin</artifactId>-->
-<!--        <version>3.8.1</version>-->
-<!--        <configuration>-->
-<!--          <annotationProcessorPaths>-->
-<!--            &lt;!&ndash; Сначала подключаем Lombok для первичной обработки кода &ndash;&gt;-->
-<!--            <path>-->
-<!--              <groupId>org.projectlombok</groupId>-->
-<!--              <artifactId>lombok</artifactId>-->
-<!--              <version>LATEST_LOMBOK_VERSION</version>-->
-<!--            </path>-->
-<!--            &lt;!&ndash; После Lombok подключаем MapStruct &ndash;&gt;-->
-<!--            <path>-->
-<!--              <groupId>org.mapstruct</groupId>-->
-<!--              <artifactId>mapstruct-processor</artifactId>-->
-<!--              <version>LATEST_MAPSTRUCT_VERSION</version>-->
-<!--            </path>-->
-<!--          </annotationProcessorPaths>-->
-<!--          &lt;!&ndash; Задаем целевую версию Java для обеспечения совместимости &ndash;&gt;-->
-<!--          <source>1.8</source>-->
-<!--          <target>1.8</target>-->
-<!--        </configuration>-->
-<!--      </plugin>-->
     </plugins>
   </build>
 

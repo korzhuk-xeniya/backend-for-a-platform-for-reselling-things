@@ -11,8 +11,9 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Table(name = "ADS")
+@NoArgsConstructor
 public class Ads {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
