@@ -2,6 +2,7 @@ package ru.skypro.homework.service.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -20,13 +21,12 @@ import org.apache.commons.lang3.RandomStringUtils;
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
 @Service
-@AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class ImageServiceImpl implements ImageService {
     @Value("${ads.image.dir.path}")
     private String imageDir;
-    private ImageRepository imageRepository;
+    private final ImageRepository imageRepository;
     /**
      * @param id id сущности изображения
      * @param response ответ сервера
