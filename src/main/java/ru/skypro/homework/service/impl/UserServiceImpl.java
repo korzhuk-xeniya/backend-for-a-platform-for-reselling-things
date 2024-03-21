@@ -1,11 +1,14 @@
 package ru.skypro.homework.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import ru.skypro.homework.controller.UserController;
 import ru.skypro.homework.dto.NewPasswordDto;
 import ru.skypro.homework.dto.UpdateUserDto;
 import ru.skypro.homework.dto.UserDto;
@@ -23,6 +26,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
+    Logger log = LoggerFactory.getLogger(UserController.class);
+
     @Override
     public NewPasswordDto setPassword(NewPasswordDto newPassword, Authentication authentication)  {
         User user = userRepository.findUserByEmail(SecurityContextHolder.getContext()
@@ -36,6 +41,8 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(newPassword.getNewPassword()));
         userRepository.save(user);
 
+        log.info("Вызван метод сервиса для обновления пароля пользователя с ID: {}", user.getId());
+
         return newPassword;
     }
 
@@ -44,6 +51,9 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findUserByEmail(SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getName()).orElseThrow(() -> new UserNotFoundException());
+
+        log.info("Вызван метод сервиса для получения информации о пользователе с ID: {}", user.getId());
+
         return user;
     }
 
@@ -59,6 +69,8 @@ public class UserServiceImpl implements UserService {
 
         UpdateUserDto newUser = userMapper.userToUpdateUserDto(oldUser);
 
+        log.info("Вызван метод сервиса для обновления информации о пользователе с ID: {}", oldUser.getId());
+
         return newUser;
     }
 
@@ -68,9 +80,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String getImageByUserId(Integer id) {
+    public String getImageByUserId(Integer userId) {
         User user = new User();
         String filePath = user.getAvatar().getFilePath();
+
+        log.info("Вызван метод сервиса для обновления пароля пользователя с ID: {}", user.getId());
+
         return filePath;
     }
 }

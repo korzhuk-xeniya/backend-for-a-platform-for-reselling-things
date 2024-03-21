@@ -54,7 +54,7 @@ public class UserController {
     @PostMapping("/set_password")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity setPassword(@RequestBody NewPasswordDto newPassword, Authentication authentication) {
-        log.info("Вызван метод обновления пароля");
+        log.info("Вызван метод контроллера для обновления пароля пользователя с login: {}", authentication.getName());
 //        return ResponseEntity.ok(new NewPasswordDto());
         return ResponseEntity.ok(userService.setPassword(newPassword, authentication));
     }
@@ -71,7 +71,7 @@ public class UserController {
     @GetMapping("/me")
     @PreAuthorize("isAuthenticated()")
     public UserDto getAuthUserInfo(Authentication authentication) {
-        log.info("Вызван метод получения информации об авторизованном пользователе");
+        log.info("Вызван метод контроллера для получения информации об авторизованном пользователе с login: {}", authentication.getName());
         User user = userService.getAuthUserInfo(authentication);
 //        return ResponseEntity.ok(new UserDto());
         return userMapper.userToUserDto(user);
@@ -90,7 +90,7 @@ public class UserController {
     @PatchMapping("/me")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity updateAuthUserInfo(@RequestBody UpdateUserDto updateUser, Authentication authentication) {
-        log.info("Вызван метод изменения информации об авторизованном пользователе");
+        log.info("Вызван метод контроллера для изменения информации об авторизованном пользователе с login: {}", authentication.getName());
 //        return ResponseEntity.ok(new UpdateUserDto());
         return ResponseEntity.ok(userService.updateAuthUserInfo(updateUser, authentication));
     }
@@ -106,14 +106,18 @@ public class UserController {
     })
     @PatchMapping("/me/image")
     public ResponseEntity updateAvatar(@RequestBody MultipartFile avatar) {
-        log.info("Вызван метод обновления аватара");
-//        String accept = request.getHeader("Accept");
+
+        log.info("Вызван метод контроллера для обновления аватара");
+
         return ResponseEntity.ok(null);
 //        return ResponseEntity.ok(userService.updateAvatar(avatar));
     }
 
     @GetMapping("/image/{id}")
     public String getImageByUserId(@PathVariable Integer userId) {
+
+        log.info("Вызван метод контроллера для получения аватара пользователя с ID: {}", userId);
+
         return userService.getImageByUserId(userId);
     }
 
