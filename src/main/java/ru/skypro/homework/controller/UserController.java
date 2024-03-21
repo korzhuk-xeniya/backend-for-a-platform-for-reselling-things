@@ -70,10 +70,11 @@ public class UserController {
     })
     @GetMapping("/me")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<UserDto> getAuthUserInfo() {
+    public UserDto getAuthUserInfo(Authentication authentication) {
         log.info("Вызван метод получения информации об авторизованном пользователе");
-        return ResponseEntity.ok(new UserDto());
-//            return ResponseEntity.ok(userService.getAuthUserInfo());
+        User user = userService.getAuthUserInfo(authentication);
+//        return ResponseEntity.ok(new UserDto());
+        return userMapper.userToUserDto(user);
 
     }
 

@@ -15,9 +15,6 @@ import ru.skypro.homework.exception.WrongPasswordException;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.UserService;
 
-import java.nio.channels.MulticastChannel;
-import java.security.UnrecoverableKeyException;
-
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -41,8 +38,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getAuthUserInfo() {
-        return null;
+    public User getAuthUserInfo(Authentication authentication) {
+        User user = userRepository.findUserByEmail(SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName()).orElseThrow(() -> new UserNotFoundException());
+        return user;
     }
 
     @Override
