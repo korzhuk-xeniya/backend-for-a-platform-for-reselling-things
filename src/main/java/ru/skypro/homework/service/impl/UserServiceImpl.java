@@ -75,7 +75,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public MultipartFile updateAvatar(MultipartFile avatar) {
+    public MultipartFile updateAvatar(MultipartFile avatar, Authentication authentication) {
+        User oldUser = userRepository.findUserByEmail(SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName()).orElseThrow(() -> new UserNotFoundException()); //TODO
+
         return null;
     }
 

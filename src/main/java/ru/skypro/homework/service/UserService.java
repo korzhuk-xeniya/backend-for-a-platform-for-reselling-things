@@ -10,8 +10,8 @@ import ru.skypro.homework.entity.User;
 public interface UserService {
     NewPasswordDto setPassword(NewPasswordDto newPassword, Authentication authentication);
     User getAuthUserInfo(Authentication authentication);
-    UpdateUserDto updateAuthUserInfo(UpdateUserDto updateUser, Authentication authenticatio);
-    MultipartFile updateAvatar(MultipartFile avatar);
+    UpdateUserDto updateAuthUserInfo(UpdateUserDto updateUser, Authentication authentication);
+    MultipartFile updateAvatar(MultipartFile avatar, Authentication authentication);
 
     String getImageByUserId(Integer id);
 

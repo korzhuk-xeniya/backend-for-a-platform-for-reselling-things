@@ -35,12 +35,6 @@ public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;
 
-
-//    @Autowired
-//    private final HttpServletRequest request;
-//    @Autowired
-//    private final ObjectMapper objectMapper;
-
     @Operation(summary = "Обновление пароля")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Пароль обновлен",
@@ -105,12 +99,12 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован")
     })
     @PatchMapping("/me/image")
-    public ResponseEntity updateAvatar(@RequestBody MultipartFile avatar) {
+    public ResponseEntity updateAvatar(@RequestBody MultipartFile avatar, Authentication authentication) {
 
         log.info("Вызван метод контроллера для обновления аватара");
 
-        return ResponseEntity.ok(null);
-//        return ResponseEntity.ok(userService.updateAvatar(avatar));
+//        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(userService.updateAvatar(avatar, authentication));
     }
 
     @GetMapping("/image/{id}")
