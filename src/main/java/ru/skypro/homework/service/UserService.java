@@ -8,7 +8,7 @@ import ru.skypro.homework.dto.UserDto;
 import ru.skypro.homework.entity.User;
 
 public interface UserService {
-    NewPasswordDto setPassword(NewPasswordDto newPassword, Authentication authentication);
+    void setPassword(NewPasswordDto newPassword, Authentication authentication);
     User getAuthUserInfo(Authentication authentication);
     UpdateUserDto updateAuthUserInfo(UpdateUserDto updateUser, Authentication authentication);
     MultipartFile updateAvatar(MultipartFile avatar, Authentication authentication);

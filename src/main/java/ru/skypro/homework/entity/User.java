@@ -2,6 +2,8 @@ package ru.skypro.homework.entity;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.skypro.homework.dto.Role;
 
 import javax.persistence.*;

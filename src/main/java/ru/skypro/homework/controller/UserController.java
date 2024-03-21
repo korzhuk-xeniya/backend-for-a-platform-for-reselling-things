@@ -48,9 +48,10 @@ public class UserController {
     @PostMapping("/set_password")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity setPassword(@RequestBody NewPasswordDto newPassword, Authentication authentication) {
+
         log.info("Вызван метод контроллера для обновления пароля пользователя с login: {}", authentication.getName());
-//        return ResponseEntity.ok(new NewPasswordDto());
-        return ResponseEntity.ok(userService.setPassword(newPassword, authentication));
+        userService.setPassword(newPassword, authentication);
+        return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "Получение информации об авторизованном пользователе")
@@ -65,6 +66,7 @@ public class UserController {
     @GetMapping("/me")
     @PreAuthorize("isAuthenticated()")
     public UserDto getAuthUserInfo(Authentication authentication) {
+
         log.info("Вызван метод контроллера для получения информации об авторизованном пользователе с login: {}", authentication.getName());
         User user = userService.getAuthUserInfo(authentication);
 //        return ResponseEntity.ok(new UserDto());
@@ -84,6 +86,7 @@ public class UserController {
     @PatchMapping("/me")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity updateAuthUserInfo(@RequestBody UpdateUserDto updateUser, Authentication authentication) {
+
         log.info("Вызван метод контроллера для изменения информации об авторизованном пользователе с login: {}", authentication.getName());
 //        return ResponseEntity.ok(new UpdateUserDto());
         return ResponseEntity.ok(userService.updateAuthUserInfo(updateUser, authentication));

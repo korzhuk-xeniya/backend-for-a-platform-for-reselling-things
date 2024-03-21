@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
     Logger log = LoggerFactory.getLogger(UserController.class);
 
     @Override
-    public NewPasswordDto setPassword(NewPasswordDto newPassword, Authentication authentication)  {
+    public void setPassword(NewPasswordDto newPassword, Authentication authentication)  {
         User user = userRepository.findUserByEmail(SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getName()).orElseThrow(() -> new UserNotFoundException());
@@ -43,7 +43,6 @@ public class UserServiceImpl implements UserService {
 
         log.info("Вызван метод сервиса для обновления пароля пользователя с ID: {}", user.getId());
 
-        return newPassword;
     }
 
     @Override
@@ -67,6 +66,7 @@ public class UserServiceImpl implements UserService {
         oldUser.setLastName(updateUser.getLastName());
         oldUser.setPhone(updateUser.getPhone());
 
+        userRepository.save(oldUser);
         UpdateUserDto newUser = userMapper.userToUpdateUserDto(oldUser);
 
         log.info("Вызван метод сервиса для обновления информации о пользователе с ID: {}", oldUser.getId());
