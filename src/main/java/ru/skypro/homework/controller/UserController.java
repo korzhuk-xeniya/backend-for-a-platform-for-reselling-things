@@ -89,10 +89,10 @@ public class UserController {
     })
     @PatchMapping("/me")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity updateAuthUserInfo(@RequestBody UpdateUserDto updateUser) {
+    public ResponseEntity updateAuthUserInfo(@RequestBody UpdateUserDto updateUser, Authentication authentication) {
         log.info("Вызван метод изменения информации об авторизованном пользователе");
-        return ResponseEntity.ok(new UpdateUserDto());
-//            return ResponseEntity.ok(userService.updateAuthUserInfo(updateUser));
+//        return ResponseEntity.ok(new UpdateUserDto());
+        return ResponseEntity.ok(userService.updateAuthUserInfo(updateUser, authentication));
     }
 
     @Operation(summary = "Обновление аватара авторизованного пользователя")
