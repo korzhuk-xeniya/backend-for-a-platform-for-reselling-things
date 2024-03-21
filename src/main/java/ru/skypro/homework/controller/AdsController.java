@@ -76,7 +76,7 @@ public class AdsController {
 
     })
     @GetMapping("/{id}")
-    public ResponseEntity<ExtendedAdDto> getInfoAd(@PathVariable
+    public ResponseEntity<ExtendedAdDto> getAds(@PathVariable
                                                    @Parameter(description = "id объявления",
                                                            required = true) Integer id) {
         log.info("Получение информации об объявлении по id");
@@ -111,7 +111,7 @@ public class AdsController {
     })
 
     @PatchMapping("/{id}")
-    public ResponseEntity<AdDto> updateInfoAd(@PathVariable
+    public ResponseEntity<AdDto> updateAds(@PathVariable
                                               @Parameter(description = "id объявления",
                                                       required = true) Integer id, Authentication authentication,
                                               @RequestBody CreateOrUpdateAdDto createOrUpdateAdDto) {
@@ -130,7 +130,7 @@ public class AdsController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
     })
     @GetMapping("/me")
-    public ResponseEntity<AdsDto> getAllUserAds() {
+    public ResponseEntity<AdsDto> getAdsMe() {
         return ResponseEntity.ok().build();
     }
 
@@ -147,7 +147,7 @@ public class AdsController {
     })
 
     @PatchMapping("/{id}/image")
-    public ResponseEntity<ExtendedAdDto> updateImageAd(
+    public ResponseEntity<ExtendedAdDto> updateImage(
             @PathVariable @Parameter(description = "id объявления", required = true) Integer id,
             @RequestBody MultipartFile image) {
         return ResponseEntity.ok().build();

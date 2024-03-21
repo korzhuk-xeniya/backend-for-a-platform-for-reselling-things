@@ -2,12 +2,16 @@ package ru.skypro.homework.entity;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import lombok.*;
+import org.hibernate.proxy.HibernateProxy;
 import ru.skypro.homework.dto.Role;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Data

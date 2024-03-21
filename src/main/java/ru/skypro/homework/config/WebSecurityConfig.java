@@ -56,7 +56,19 @@ public class WebSecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+        return new PasswordEncoder() {
+            @Override
+            public String encode(CharSequence rawPassword) {
+                return rawPassword.toString();
+            }
 
+            @Override
+            public boolean matches(CharSequence rawPassword, String encodePassword) {
+                return encodePassword.equals(rawPassword.toString());
+
+            }
+        };
+//        return new BCryptPasswordEncoder();
+
+    }
 }
