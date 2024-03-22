@@ -58,7 +58,7 @@ public class CommentsAdsController {
                             ))})
 
     @GetMapping("/ads/{id}/comments")
-    public ResponseEntity<Comments> getComments(@Parameter(description = "ads id") @RequestParam int id) {
+    public ResponseEntity<Comments> getComments(@Parameter(description = "ads id") @PathVariable int id) {
         List<Comment> comment = commentsService.getComments(id);
         return ResponseEntity.ok(commentMapper.toCommentsDTO(comment.size(), comment));
     }
@@ -91,7 +91,7 @@ public class CommentsAdsController {
 
                             ))})
     @PostMapping("/ads/{id}/comments")
-    public CommentDto addComment(@RequestParam int id, @RequestBody CreateOrUpdateComment text,
+    public CommentDto addComment(@PathVariable int id, @RequestBody CreateOrUpdateComment text,
                                  Authentication authentication) {
         Comment comment = commentsService.addCommentToAds(id, text,authentication); //TODO
         return commentMapper.toDTO(comment);
@@ -132,7 +132,7 @@ public class CommentsAdsController {
 
                             ))})
     @DeleteMapping("/ads/{adId}/comments/{commentId}")
-    public void deleteComment(@RequestParam int adId, @RequestParam int commentId, Authentication authentication) {
+    public void deleteComment(@PathVariable int adId, @PathVariable int commentId, Authentication authentication) {
         commentsService.deleteComment(adId, commentId, authentication);
 
     }
@@ -173,7 +173,7 @@ public class CommentsAdsController {
 
                             ))})
     @PatchMapping("/ads/{adId}/comments/{commentId}")
-    public ResponseEntity<Comment> updateComment(@RequestParam int adId, @RequestParam int commentId,
+    public ResponseEntity<Comment> updateComment(@PathVariable int adId, @PathVariable int commentId,
                                     @RequestBody CreateOrUpdateComment text,
                                     Authentication authentication) {
         return ResponseEntity.ok(commentsService.update(adId, commentId, text,authentication));
