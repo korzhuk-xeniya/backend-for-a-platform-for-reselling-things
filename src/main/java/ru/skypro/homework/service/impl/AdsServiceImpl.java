@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import ru.skypro.homework.dto.AdsDto;
 import ru.skypro.homework.dto.CreateOrUpdateAdDto;
+import org.springframework.security.core.Authentication;
 import ru.skypro.homework.entity.Ads;
 import ru.skypro.homework.entity.Image;
 import ru.skypro.homework.entity.User;
@@ -14,6 +16,8 @@ import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.AdsService;
 import ru.skypro.homework.service.ImageService;
 import ru.skypro.homework.service.UserOrAdminService;
+import ru.skypro.homework.exception.AdsNotFoundException;
+import ru.skypro.homework.exception.UserNotFoundException;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -103,5 +107,46 @@ public class AdsServiceImpl implements AdsService {
             }
         }
         return null;
+    }
+    /**
+     * Получает данные об объявлениях пользователя
+     *
+     * @param authentication данные о текущем пользователе {@link Authentication}
+     * @return данные об объявлениях пользователя в виде дто-объекта {@link AdsDto}
+     */
+    @Override
+    public AdsDto getAllUserAds(Authentication authentication) {
+        User authenticatedUser = userRepository
+                .findUserByEmail(authentication.getName())
+                .orElseThrow(UserNotFoundException::new);
+        log.info("Пользователь авторизован и запустился метод getAdsMe!");
+        List<Ads> adsList = adsRepository.findAllByUser(authenticatedUser);
+        return adsMapper.listAdsToAdsDto(adsList.size(), adsList);
+    }
+
+    /**
+     * Обновляет картинку объявления
+     *
+     * @param id        идентификатор объявления
+     * @param imageFile новая картинка
+     * @return <code>true</code> если картинка обновлена, <code>false</code> в случае неудачи
+     */
+    @Override
+    public boolean updateImageAd(int id, MultipartFile imageFile, String email) {
+        log.info("запустился метод updateImage.");
+        Ads ads = adsRepository.findById(id).orElseThrow(AdsNotFoundException::new);
+        User adOwner = ads.getUser();
+        if (userOrAdminService.isUserOrAdmin(email, adOwner)) {
+            Image image;
+            try {
+                image = imageService.saveImageFile(imageFile);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            ads.setImage(image);
+            adsRepository.save(ads);
+            return true;
+        }
+        return false;
     }
 }
