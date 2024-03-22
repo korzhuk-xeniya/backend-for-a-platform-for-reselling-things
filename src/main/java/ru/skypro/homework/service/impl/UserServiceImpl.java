@@ -34,7 +34,11 @@ public class UserServiceImpl implements UserService {
                 .getAuthentication()
                 .getName()).orElseThrow(() -> new UserNotFoundException());
 
-        if (!passwordEncoder.matches(newPassword.getCurrentPassword(), user.getPassword())) {
+//        if (!passwordEncoder.matches(newPassword.getCurrentPassword(), user.getPassword())) {
+//            throw new WrongPasswordException();
+//        }
+
+        if (!newPassword.getCurrentPassword().equals(user.getPassword())) {
             throw new WrongPasswordException();
         }
 
