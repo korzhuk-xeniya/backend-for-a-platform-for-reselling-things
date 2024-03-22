@@ -28,6 +28,10 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     Logger log = LoggerFactory.getLogger(UserController.class);
 
+    /**
+     * @param newPassword новый и старый пароль
+     * метод для обновления пароля
+     */
     @Override
     public void setPassword(NewPasswordDto newPassword, Authentication authentication)  {
         User user = userRepository.findUserByEmail(SecurityContextHolder.getContext()
@@ -49,6 +53,9 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    /**
+     * @return информацию об авторизованном пользователе
+     */
     @Override
     public User getAuthUserInfo(Authentication authentication) {
         User user = userRepository.findUserByEmail(SecurityContextHolder.getContext()
@@ -60,6 +67,11 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    /**
+     * @param updateUser имя, фамилия и номер телефона пользователя
+     * @return обновленную информацию о пользователе
+     * метод для обновления информации о пользователе
+     */
     @Override
     public UpdateUserDto updateAuthUserInfo(UpdateUserDto updateUser, Authentication authenticatio) {
         User oldUser = userRepository.findUserByEmail(SecurityContextHolder.getContext()
@@ -78,6 +90,10 @@ public class UserServiceImpl implements UserService {
         return newUser;
     }
 
+    /**
+     * @param avatar картинка
+     * метод для обновления аватара пользователя
+     */
     @Override
     public MultipartFile updateAvatar(MultipartFile avatar, Authentication authentication) {
         User oldUser = userRepository.findUserByEmail(SecurityContextHolder.getContext()
@@ -87,6 +103,11 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    /**
+     * @param userId
+     * @return url аватара
+     * метод для маппера User - UserDto
+     */
     @Override
     public String getImageByUserId(Integer userId) {
         User user = new User();
