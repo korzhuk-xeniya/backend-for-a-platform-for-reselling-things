@@ -48,7 +48,7 @@ public class AdsController {
     public ResponseEntity<AdsDto> getAllAds() {
         log.info("Запрос всех обьявлений");
         return ResponseEntity.ok(adsMapper.listAdsToAdsDto(adsService.getAllAds().size(), adsService.getAllAds()));
-        //        return ResponseEntity.ok().build();
+
     }
 
     @Operation(summary = "Добавление объявления")

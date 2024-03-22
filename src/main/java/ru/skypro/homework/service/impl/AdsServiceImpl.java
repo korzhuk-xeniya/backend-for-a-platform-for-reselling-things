@@ -40,6 +40,7 @@ public class AdsServiceImpl implements AdsService {
      */
     @Override
     public List<Ads> getAllAds() {
+        log.info("запустился метод выдающий список объявлений без авторизации");
         List<Ads> adsList = adsRepository.findAll();
         log.info(adsList.toString());
         return adsList;
@@ -119,7 +120,7 @@ public class AdsServiceImpl implements AdsService {
         User authenticatedUser = userRepository
                 .findUserByEmail(authentication.getName())
                 .orElseThrow(UserNotFoundException::new);
-        log.info("Пользователь авторизован и запустился метод getAdsMe!");
+        log.info("Пользователь авторизован и запустился метод getAllUserAds!");
         List<Ads> adsList = adsRepository.findAllByUser(authenticatedUser);
         return adsMapper.listAdsToAdsDto(adsList.size(), adsList);
     }
@@ -133,7 +134,7 @@ public class AdsServiceImpl implements AdsService {
      */
     @Override
     public boolean updateImageAd(int id, MultipartFile imageFile, String email) {
-        log.info("запустился метод updateImage.");
+        log.info("запустился метод updateImageAd");
         Ads ads = adsRepository.findById(id).orElseThrow(AdsNotFoundException::new);
         User adOwner = ads.getUser();
         if (userOrAdminService.isUserOrAdmin(email, adOwner)) {

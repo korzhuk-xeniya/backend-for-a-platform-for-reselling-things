@@ -19,7 +19,9 @@ public interface AdsMapper {
     @Mapping(source = "id", target = "pk")
     @Mapping(target = "image", expression =  "java(ads.getImage() != null ? ads.getImage().getUrl() : \"\")")
     AdDto adsToAdsDto(Ads ads);
-    AdsDto listAdsToAdsDto(Integer count, List<Ads> results);
+
+     AdsDto listAdsToAdsDto(Integer count, List<Ads> results);
+
     Ads CreateOrUpdateAdDtoToAds(CreateOrUpdateAdDto createOrUpdateAdDto);
     @Mapping(target = "description", source = "description")
     @Mapping(target = "authorFirstName", source = "user.firstName")
