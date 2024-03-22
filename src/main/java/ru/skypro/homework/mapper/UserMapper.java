@@ -25,7 +25,6 @@ public interface UserMapper {
     @Mapping(target = "role", source = "user.role")
 //    @Mapping(target = "image", expression = "java(\"/image/\" + user.getId())")
     @Mapping(target = "image", expression =  "java(user.getAvatar() == null ? null : user.getAvatar().getFilePath())")
-//    @Mapping(target = "image", expression = "java(\"/image/\"+user.getId())")
     UserDto userToUserDto(User user);
 
     /**
