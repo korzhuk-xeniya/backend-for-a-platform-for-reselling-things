@@ -23,7 +23,8 @@ public interface UserMapper {
     @Mapping(target = "lastName", source = "user.lastName")
     @Mapping(target = "phone", source = "user.phone")
     @Mapping(target = "role", source = "user.role")
-    @Mapping(target = "image", expression = "java(\"/image/\" + user.getId())")
+//    @Mapping(target = "image", expression = "java(\"/image/\" + user.getId())")
+    @Mapping(target = "image", expression =  "java(user.getAvatar() == null ? null : user.getAvatar().getFilePath())")
     UserDto userToUserDto(User user);
 
     /**
