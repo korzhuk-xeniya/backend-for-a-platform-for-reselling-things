@@ -12,6 +12,8 @@ public interface CommentService {
 
     Comment addCommentToAds(int id, CreateOrUpdateComment text, Authentication authentication);
 
+//    Comment addCommentToAds(Integer id, CreateOrUpdateComment text, Authentication authentication);
+
     boolean deleteComment(int adId, int commentId, Authentication authentication);
 
 

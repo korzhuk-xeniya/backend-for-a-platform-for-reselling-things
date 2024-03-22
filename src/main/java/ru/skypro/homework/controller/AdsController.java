@@ -23,6 +23,7 @@ import ru.skypro.homework.service.ImageService;
 
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 
 @Slf4j
@@ -130,10 +131,16 @@ public class AdsController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
     })
     @GetMapping("/me")
-    public ResponseEntity<AdsDto> getAllUserAds() {
-        return ResponseEntity.ok().build();
+    public ResponseEntity<AdsDto> getAllUserAds(@NotNull Authentication authentication) {
+        log.info("метод получения всех объявлений авторизованного пользователя");
+        AdsDto ads = adsService.getAllUserAds(authentication);
+        log.info(String.valueOf(ads));
+        if (ads != null) {
+            return ResponseEntity.ok(ads);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
-
 
     @Operation(summary = "Обновление картинки объявления")
     @ApiResponses(value = {
@@ -146,13 +153,17 @@ public class AdsController {
             @ApiResponse(responseCode = "404", description = "Not found")
     })
 
-    @PatchMapping("/{id}/image")
-    public ResponseEntity<ExtendedAdDto> updateImageAd(
-            @PathVariable @Parameter(description = "id объявления", required = true) Integer id,
-            @RequestBody MultipartFile image) {
-        return ResponseEntity.ok().build();
+    @PatchMapping(value = "/{id}/image", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<?> updateImageAd(@NotNull Authentication authentication,
+                                         @PathVariable("id") int id,
+                                         @RequestPart(value = "image") @Valid MultipartFile image
+    ) {
+        if (adsService.updateImageAd(id, image, authentication.getName())) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
-
 }
 
 
