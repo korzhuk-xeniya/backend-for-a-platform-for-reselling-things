@@ -12,12 +12,15 @@ import ru.skypro.homework.controller.UserController;
 import ru.skypro.homework.dto.NewPasswordDto;
 import ru.skypro.homework.dto.UpdateUserDto;
 import ru.skypro.homework.dto.UserDto;
+import ru.skypro.homework.entity.Image;
 import ru.skypro.homework.entity.User;
 import ru.skypro.homework.exception.UserNotFoundException;
 import ru.skypro.homework.exception.WrongPasswordException;
 import ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.UserService;
+
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +29,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
+    private final ImageServiceImpl imageService;
     Logger log = LoggerFactory.getLogger(UserController.class);
 
     /**
@@ -95,12 +99,16 @@ public class UserServiceImpl implements UserService {
      * метод для обновления аватара пользователя
      */
     @Override
-    public MultipartFile updateAvatar(MultipartFile avatar, Authentication authentication) {
-        User oldUser = userRepository.findUserByEmail(SecurityContextHolder.getContext()
+    public void updateAvatar(MultipartFile avatar, Authentication authentication) throws IOException {
+        User user = userRepository.findUserByEmail(SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getName()).orElseThrow(() -> new UserNotFoundException()); //TODO
 
-        return null;
+        Image image = imageService.saveImageFile(avatar);
+        user.setAvatar(image);
+
+        log.info("Вызван метод сервиса для обновления аватара пользователя с ID: {}", user.getId());
+
     }
 
     /**

@@ -23,6 +23,8 @@ import ru.skypro.homework.entity.User;
 import ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.service.UserService;
 
+import java.io.IOException;
+
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
@@ -102,12 +104,11 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован")
     })
     @PatchMapping("/me/image")
-    public ResponseEntity updateAvatar(@RequestBody MultipartFile avatar, Authentication authentication) {
+    public ResponseEntity updateAvatar(@RequestBody MultipartFile avatar, Authentication authentication) throws IOException {
 
         log.info("Вызван метод контроллера для обновления аватара");
-
-//        return ResponseEntity.ok(null);
-        return ResponseEntity.ok(userService.updateAvatar(avatar, authentication));
+        userService.updateAvatar(avatar, authentication);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/image/{id}")
