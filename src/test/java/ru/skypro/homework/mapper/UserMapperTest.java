@@ -32,7 +32,7 @@ public class UserMapperTest {
         assertThat(userDto.getLastName()).isEqualTo(user.getLastName());
         assertThat(userDto.getPhone()).isEqualTo(user.getPhone());
         assertThat(userDto.getRole()).isEqualTo(user.getRole());
-//        assertThat(userDto.getImage()).isEqualTo(user.getAvatar().getFilePath());
+        assertThat(userDto.getImage()).isEqualTo(user.getAvatar().getFilePath());
     }
 
     @Test
@@ -97,7 +97,7 @@ public class UserMapperTest {
 
         Image avatar = new Image();
         avatar.setId(1);
-        avatar.setFilePath("filePath");
+        avatar.setFilePath("/users/image/" + user.getId());
         avatar.setFileExtension("fileExtension");
         avatar.setFileSize(10);
         avatar.setMediaType("mediaType");
