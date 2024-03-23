@@ -11,13 +11,17 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.controller.UserController;
 import ru.skypro.homework.dto.NewPasswordDto;
 import ru.skypro.homework.dto.UpdateUserDto;
-import ru.skypro.homework.dto.UserDto;
 import ru.skypro.homework.entity.User;
+import ru.skypro.homework.entity.Image;
 import ru.skypro.homework.exception.UserNotFoundException;
 import ru.skypro.homework.exception.WrongPasswordException;
 import ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.repository.UserRepository;
+import ru.skypro.homework.service.ImageService;
 import ru.skypro.homework.service.UserService;
+
+import java.io.IOException;
+
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +30,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
+    final ImageService imageService;
     Logger log = LoggerFactory.getLogger(UserController.class);
 
     @Override
@@ -74,13 +79,27 @@ public class UserServiceImpl implements UserService {
         return newUser;
     }
 
+//    @Override
+//    public MultipartFile updateAvatar(MultipartFile avatar, Authentication authentication) {
+//        User oldUser = userRepository.findUserByEmail(SecurityContextHolder.getContext()
+//                .getAuthentication()
+//                .getName()).orElseThrow(() -> new UserNotFoundException()); //TODO
+//
+//        return null;
+//    }
     @Override
-    public MultipartFile updateAvatar(MultipartFile avatar, Authentication authentication) {
-        User oldUser = userRepository.findUserByEmail(SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getName()).orElseThrow(() -> new UserNotFoundException()); //TODO
-
-        return null;
+    public boolean updateAvatar(MultipartFile imageFile, Authentication authentication) {
+        User user = userRepository.findUserByEmail(authentication.getName())
+                .orElseThrow(UserNotFoundException::new);
+        Image image;
+        try {
+            image = imageService.saveImageFile(imageFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        user.setAvatar(image);
+        userRepository.saveAndFlush(user);
+        return true;
     }
 
     @Override
@@ -92,4 +111,5 @@ public class UserServiceImpl implements UserService {
 
         return filePath;
     }
+
 }

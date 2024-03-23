@@ -1,18 +1,17 @@
 package ru.skypro.homework.entity;
 
 import lombok.Data;
-import org.hibernate.validator.constraints.Length;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import ru.skypro.homework.dto.Role;
+import lombok.NoArgsConstructor;
 
+import ru.skypro.homework.dto.Role;
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import java.util.Objects;
+
 
 @Entity
 @Data
+@NoArgsConstructor
 @Table(name = "users")
 public class User {
 
@@ -43,8 +42,23 @@ public class User {
     @Column(name = "REG_DATE", nullable = false)
     private Timestamp regDate;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "AVATAR_ID")
     private Image avatar;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return Objects.equals(getEmail(), user.getEmail())
+                && Objects.equals(getFirstName(), user.getFirstName())
+                && Objects.equals(getLastName(), user.getLastName())
+                && Objects.equals(getPhone(), user.getPhone());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getEmail(), getFirstName(), getLastName(), getPhone());
+    }
 }

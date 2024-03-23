@@ -11,7 +11,7 @@ public interface UserService {
     void setPassword(NewPasswordDto newPassword, Authentication authentication);
     User getAuthUserInfo(Authentication authentication);
     UpdateUserDto updateAuthUserInfo(UpdateUserDto updateUser, Authentication authentication);
-    MultipartFile updateAvatar(MultipartFile avatar, Authentication authentication);
+    boolean updateAvatar(MultipartFile avatar, Authentication authentication);
 
     String getImageByUserId(Integer id);
 

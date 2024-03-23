@@ -114,7 +114,7 @@ public class ImageServiceImpl implements ImageService {
         image.setFileExtension(getExtension(Objects.requireNonNull(imageFile.getOriginalFilename())));
         image.setFileSize(imageFile.getSize());
         image.setMediaType(imageFile.getContentType());
-        return imageRepository.save(image);
+        return imageRepository.saveAndFlush(image);
     }
 
 }
