@@ -7,11 +7,13 @@ import ru.skypro.homework.dto.UpdateUserDto;
 import ru.skypro.homework.dto.UserDto;
 import ru.skypro.homework.entity.User;
 
+import java.io.IOException;
+
 public interface UserService {
     void setPassword(NewPasswordDto newPassword, Authentication authentication);
     User getAuthUserInfo(Authentication authentication);
     UpdateUserDto updateAuthUserInfo(UpdateUserDto updateUser, Authentication authentication);
-    MultipartFile updateAvatar(MultipartFile avatar, Authentication authentication);
+    void updateAvatar(MultipartFile avatar, Authentication authentication) throws IOException;;
 
     String getImageByUserId(Integer id);
 
