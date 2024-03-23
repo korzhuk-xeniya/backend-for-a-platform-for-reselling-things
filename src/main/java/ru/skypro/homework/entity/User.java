@@ -43,7 +43,7 @@ public class User {
     @Column(name = "REG_DATE", nullable = false)
     private Timestamp regDate;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "AVATAR_ID")
     private Image avatar;
 

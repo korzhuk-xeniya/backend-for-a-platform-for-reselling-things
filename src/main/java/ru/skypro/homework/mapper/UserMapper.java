@@ -1,9 +1,7 @@
 package ru.skypro.homework.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 import ru.skypro.homework.dto.Register;
-import ru.skypro.homework.dto.Role;
 import ru.skypro.homework.dto.UpdateUserDto;
 import ru.skypro.homework.dto.UserDto;
 import ru.skypro.homework.entity.User;
@@ -34,14 +32,20 @@ public interface UserMapper {
      * @param userDto
      * @return User
      */
+
     @Mapping(target = "id", source = "userDto.id")
     @Mapping(target = "email", source = "userDto.email")
     @Mapping(target = "firstName", source = "userDto.firstName")
     @Mapping(target = "lastName", source = "userDto.lastName")
     @Mapping(target = "phone", source = "userDto.phone")
     @Mapping(target = "role", source = "userDto.role")
-//    @Mapping(target = "image", source = "userDto")
+//    @Mapping(target = "avatar", source = "image", qualifiedByName = "extractIdFromImage")
     User userDtoToUser(UserDto userDto);
+
+//    @Named("extractIdFromImage")
+//    default Integer extractIdFromImage(String image) {
+//        return Integer.parseInt(image.replaceAll("/users/image/", ""));
+//    }
 
     /**
      * User to UpdateUserDto.
