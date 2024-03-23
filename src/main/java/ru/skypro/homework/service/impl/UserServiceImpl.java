@@ -11,13 +11,16 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.controller.UserController;
 import ru.skypro.homework.dto.NewPasswordDto;
 import ru.skypro.homework.dto.UpdateUserDto;
-import ru.skypro.homework.dto.UserDto;
+import ru.skypro.homework.entity.Image;
 import ru.skypro.homework.entity.User;
 import ru.skypro.homework.exception.UserNotFoundException;
 import ru.skypro.homework.exception.WrongPasswordException;
 import ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.repository.UserRepository;
+import ru.skypro.homework.service.ImageService;
 import ru.skypro.homework.service.UserService;
+
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -26,10 +29,11 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
+    private final ImageService imageService;
     Logger log = LoggerFactory.getLogger(UserController.class);
 
     @Override
-    public void setPassword(NewPasswordDto newPassword, Authentication authentication)  {
+    public void setPassword(NewPasswordDto newPassword, Authentication authentication) {
         User user = userRepository.findUserByEmail(SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getName()).orElseThrow(() -> new UserNotFoundException());
@@ -75,13 +79,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public MultipartFile updateAvatar(MultipartFile avatar, Authentication authentication) {
-        User oldUser = userRepository.findUserByEmail(SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getName()).orElseThrow(() -> new UserNotFoundException()); //TODO
-
-        return null;
+    public boolean updateAvatar(MultipartFile avatar, Authentication authentication) throws IOException {
+//        User oldUser = userRepository.findUserByEmail(SecurityContextHolder.getContext()
+//                .getAuthentication()
+//                .getName()).orElseThrow(() -> new UserNotFoundException()); //TODO
+        User user = userRepository.findUserByEmail(authentication.getName())
+                .orElseThrow();
+        Image image;
+        image = imageService.saveImageFile(avatar);
+        user.setAvatar(image);
+        userRepository.saveAndFlush(user);
+        return true;
     }
+
 
     @Override
     public String getImageByUserId(Integer userId) {

@@ -76,8 +76,8 @@ class CommentServiceImplTest {
          text = commentMapper.toDTO3(testComment);
     }
 
-//    @Test
-//    void addCommentToAds_() {
+    @Test
+    void addCommentToAds_() {
 //        when(userRepository.save(any(User.class))).thenReturn(testUser);
 //        when(adsRepository.findById(anyInt())).thenReturn(Optional.ofNullable(testAds));
 //        when(commentRepository.save(any(Comment.class))).thenReturn(testComment);
@@ -89,7 +89,7 @@ class CommentServiceImplTest {
 //        assertThat(result.getText()).isEqualTo(testComment.getText());
 //        assertThat(result.getCreatedAt()).isEqualTo(testComment.getCreatedAt());
 //
-//    }
+    }
 
     @Test
     void deleteComment() {

@@ -144,7 +144,7 @@ public class AdsServiceImpl implements AdsService {
                 throw new RuntimeException(e);
             }
             ads.setImage(image);
-            adsRepository.save(ads);
+            adsRepository.saveAndFlush(ads);
             return true;
         }
         return false;
