@@ -23,9 +23,6 @@ public interface UserMapper {
     @Mapping(target = "lastName", source = "user.lastName")
     @Mapping(target = "phone", source = "user.phone")
     @Mapping(target = "role", source = "user.role")
-//    @Mapping(target = "image", expression = "java(\"/image/\" + user.getId())")
-//    @Mapping(target = "image", expression =  "java(user.getAvatar() == null ? null : user.getAvatar().getFilePath())")
-//    @Mapping(target = "image", expression = "java(\"/image/\"+user.getId())")
     @Mapping(target = "image", expression = "java(user.getAvatar() != null ? user.getAvatar().getUrl() : \"\")")
     UserDto userToUserDto(User user);
 
@@ -41,7 +38,6 @@ public interface UserMapper {
     @Mapping(target = "lastName", source = "userDto.lastName")
     @Mapping(target = "phone", source = "userDto.phone")
     @Mapping(target = "role", source = "userDto.role")
-//    @Mapping(target = "image", source = "userDto")
     User userDtoToUser(UserDto userDto);
 
     /**

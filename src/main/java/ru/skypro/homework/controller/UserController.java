@@ -34,8 +34,6 @@ import java.io.IOException;
 @RequestMapping("/users")
 public class UserController {
 
-//    Logger log = LoggerFactory.getLogger(UserController.class);
-
     private final UserService userService;
     private final UserMapper userMapper;
 
@@ -74,7 +72,6 @@ public class UserController {
 
         log.info("Вызван метод контроллера для получения информации об авторизованном пользователе с login: {}", authentication.getName());
         User user = userService.getAuthUserInfo(authentication);
-//        return ResponseEntity.ok(new UserDto());
         return userMapper.userToUserDto(user);
 
     }
@@ -93,7 +90,7 @@ public class UserController {
     public ResponseEntity updateAuthUserInfo(@RequestBody UpdateUserDto updateUser, Authentication authentication) {
 
         log.info("Вызван метод контроллера для изменения информации об авторизованном пользователе с login: {}", authentication.getName());
-//        return ResponseEntity.ok(new UpdateUserDto());
+
         return ResponseEntity.ok(userService.updateAuthUserInfo(updateUser, authentication));
     }
 

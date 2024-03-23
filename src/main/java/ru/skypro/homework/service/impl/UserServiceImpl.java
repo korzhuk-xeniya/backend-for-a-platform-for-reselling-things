@@ -80,9 +80,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean updateAvatar(MultipartFile avatar, Authentication authentication) throws IOException {
-//        User oldUser = userRepository.findUserByEmail(SecurityContextHolder.getContext()
-//                .getAuthentication()
-//                .getName()).orElseThrow(() -> new UserNotFoundException()); //TODO
         User user = userRepository.findUserByEmail(authentication.getName())
                 .orElseThrow();
         Image image;

@@ -34,7 +34,6 @@ import java.io.IOException;
 @RequestMapping("/ads")
 public class AdsController {
 
-    private final ImageService imageService;
     private final AdsService adsService;
     private final AdsMapper adsMapper;
 
