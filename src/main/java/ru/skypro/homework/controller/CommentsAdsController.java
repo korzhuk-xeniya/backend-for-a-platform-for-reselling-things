@@ -2,6 +2,7 @@ package ru.skypro.homework.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -58,7 +59,8 @@ public class CommentsAdsController {
                             ))})
 
     @GetMapping("/ads/{id}/comments")
-    public ResponseEntity<Comments> getComments(@Parameter(description = "ads id") @PathVariable int id) {
+    public ResponseEntity<Comments> getComments(@Parameter(in = ParameterIn.PATH, description = "ads id",
+            required=true, schema=@Schema()) @PathVariable("id") Integer id)  {
         List<Comment> comment = commentsService.getComments(id);
         return ResponseEntity.ok(commentMapper.toCommentsDTO(comment.size(), comment));
     }

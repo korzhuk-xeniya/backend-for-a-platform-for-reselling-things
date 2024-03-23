@@ -13,7 +13,7 @@ import java.util.List;
 public interface CommentMapper
 {
 
-    @Mapping(target = "authorImage", source = "user.email")
+    @Mapping(target = "authorImage", source = "user.avatar.url")
     @Mapping(source = "id", target = "pk")
     @Mapping(source = "user.id", target = "author")
     @Mapping(source = "user.firstName", target = "authorFirstName")

@@ -2,6 +2,7 @@ package ru.skypro.homework.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -76,9 +77,9 @@ public class AdsController {
 
     })
     @GetMapping("/{id}")
-    public ResponseEntity<ExtendedAdDto> getInfoAd(@PathVariable
-                                                   @Parameter(description = "id объявления",
-                                                           required = true) Integer id) {
+    public ResponseEntity<ExtendedAdDto> getInfoAd(@Parameter(in = ParameterIn.PATH, description = "id объявления",
+            required=true, schema=@Schema()) @PathVariable("id") Integer id
+    )  {
         log.info("Получение информации об объявлении по id");
         return ResponseEntity.ok(adsMapper.toExtendedAdDto(adsService.getAd(id)));
     }
