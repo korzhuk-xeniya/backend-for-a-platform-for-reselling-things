@@ -1,6 +1,8 @@
 package ru.skypro.homework.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -50,7 +52,9 @@ public class UserController {
     })
     @PostMapping("/set_password")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity setPassword(@RequestBody NewPasswordDto newPassword, Authentication authentication) {
+    public ResponseEntity setPassword(@Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema())
+                                          @Valid @RequestBody NewPasswordDto newPassword,
+                                      Authentication authentication) {
 
         log.info("Вызван метод контроллера для обновления пароля пользователя с login: {}", authentication.getName());
         userService.setPassword(newPassword, authentication);
@@ -88,7 +92,8 @@ public class UserController {
     })
     @PatchMapping("/me")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity updateAuthUserInfo(@RequestBody UpdateUserDto updateUser, Authentication authentication) {
+    public ResponseEntity updateAuthUserInfo(@Valid @RequestBody UpdateUserDto updateUser,
+                                             Authentication authentication) {
 
         log.info("Вызван метод контроллера для изменения информации об авторизованном пользователе с login: {}", authentication.getName());
 //        return ResponseEntity.ok(new UpdateUserDto());

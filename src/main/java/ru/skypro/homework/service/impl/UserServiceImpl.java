@@ -102,6 +102,7 @@ public class UserServiceImpl implements UserService {
 
         Image image = imageService.saveImageFile(avatar);
         user.setAvatar(image);
+        userRepository.save(user);
 
         log.info("Вызван метод сервиса для обновления аватара пользователя с ID: {}", user.getId());
 
