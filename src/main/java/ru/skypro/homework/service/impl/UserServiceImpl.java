@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,10 +31,13 @@ public class UserServiceImpl implements UserService {
     private final ImageService imageService;
     Logger log = LoggerFactory.getLogger(UserController.class);
 
+    /**
+     * @param newPassword новый и старый пароль
+     * метод для обновления пароля
+     */
     @Override
     public void setPassword(NewPasswordDto newPassword, Authentication authentication) {
-        User user = userRepository.findUserByEmail(SecurityContextHolder.getContext()
-                .getAuthentication()
+        User user = userRepository.findUserByEmail(authentication
                 .getName()).orElseThrow(() -> new UserNotFoundException());
 
         if (!passwordEncoder.matches(newPassword.getCurrentPassword(), user.getPassword())) {
@@ -49,10 +51,12 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    /**
+     * @return информацию об авторизованном пользователе
+     */
     @Override
     public User getAuthUserInfo(Authentication authentication) {
-        User user = userRepository.findUserByEmail(SecurityContextHolder.getContext()
-                .getAuthentication()
+        User user = userRepository.findUserByEmail(authentication
                 .getName()).orElseThrow(() -> new UserNotFoundException());
 
         log.info("Вызван метод сервиса для получения информации о пользователе с ID: {}", user.getId());
@@ -60,10 +64,14 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    /**
+     * @param updateUser имя, фамилия и номер телефона пользователя
+     * @return обновленную информацию о пользователе
+     * метод для обновления информации о пользователе
+     */
     @Override
     public UpdateUserDto updateAuthUserInfo(UpdateUserDto updateUser, Authentication authenticatio) {
-        User oldUser = userRepository.findUserByEmail(SecurityContextHolder.getContext()
-                .getAuthentication()
+        User oldUser = userRepository.findUserByEmail(authenticatio
                 .getName()).orElseThrow(() -> new UserNotFoundException());
 
         oldUser.setFirstName(updateUser.getFirstName());
@@ -78,6 +86,11 @@ public class UserServiceImpl implements UserService {
         return newUser;
     }
 
+    /**
+     * @param avatar картинка
+     * @return boolean
+     * метод для обновления аватара пользователя
+     */
     @Override
     public boolean updateAvatar(MultipartFile avatar, Authentication authentication) throws IOException {
         User user = userRepository.findUserByEmail(authentication.getName())
@@ -86,17 +99,9 @@ public class UserServiceImpl implements UserService {
         image = imageService.saveImageFile(avatar);
         user.setAvatar(image);
         userRepository.saveAndFlush(user);
+
+        log.info("Вызван метод сервиса для обновления аватара пользователя с ID: {}", user.getId());
+
         return true;
-    }
-
-
-    @Override
-    public String getImageByUserId(Integer userId) {
-        User user = new User();
-        String filePath = user.getAvatar().getFilePath();
-
-        log.info("Вызван метод сервиса для обновления пароля пользователя с ID: {}", user.getId());
-
-        return filePath;
     }
 }
