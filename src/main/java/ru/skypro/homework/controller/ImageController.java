@@ -20,7 +20,12 @@ public class ImageController {
     private final ImageService imageService;
 
     @GetMapping("/image/{id}")
-    public void transferImageToResponse(@PathVariable Integer id, HttpServletResponse response) throws IOException {
-        imageService.transferImageToResponse(id, response);
+    public void transferImageToResponse(@PathVariable Integer id, HttpServletResponse response) {
+       try {
+           imageService.transferImageToResponse(id, response);
+       } catch(Exception e){
+           log.error("Ошибка при передаче изображения в ответ", e);
+           throw new RuntimeException("Ошибка при передаче изображения в ответ", e);
+       }
     }
 }
