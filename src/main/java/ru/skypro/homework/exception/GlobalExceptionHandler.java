@@ -1,5 +1,6 @@
 package ru.skypro.homework.exception;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -7,11 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
+@Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+//    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler({AdsNotFoundException.class, CommentNotFoundException.class, ImageNotFoundException.class,
             UserNotFoundException.class, WrongPasswordException.class})
@@ -25,7 +26,7 @@ public class GlobalExceptionHandler {
         }
 
         // Логируем ошибку
-        logger.error("An error occurred: {}", ex.getMessage(), ex);
+        log.error("An error occurred: {}", ex.getMessage(), ex);
 
         // Возвращаем соответствующий статус ответа
         return new ResponseEntity<>(ex.getMessage(), status);
