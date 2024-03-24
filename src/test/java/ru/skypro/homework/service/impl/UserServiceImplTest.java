@@ -3,6 +3,7 @@ package ru.skypro.homework.service.impl;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.core.Authentication;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,26 +12,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.Role;
 import ru.skypro.homework.dto.UpdateUserDto;
 import ru.skypro.homework.entity.Image;
 import ru.skypro.homework.entity.User;
 import ru.skypro.homework.mapper.UserMapper;
+import ru.skypro.homework.repository.ImageRepository;
 import ru.skypro.homework.repository.UserRepository;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceImplTest {
     @Mock
     private UserRepository userRepository;
+    @Mock
+    private ImageRepository imageRepository;
+    @Mock
+    private ImageServiceImpl imageService;
     @Mock
     private Authentication authentication;
     @Mock
@@ -40,7 +49,7 @@ public class UserServiceImplTest {
 
     @Test
     public void setPasswordTest() {
-
+        //TODO
     }
     @Test
     public void getAuthUserInfoTest() {
@@ -64,6 +73,7 @@ public class UserServiceImplTest {
         assertThat(result.getAvatar().getFileSize()).isEqualTo(testUser().getAvatar().getFileSize());
         assertThat(result.getAvatar().getMediaType()).isEqualTo(testUser().getAvatar().getMediaType());
 
+        verify(userRepository, times(1)).findUserByEmail(anyString());
     }
 
     @Test
@@ -93,10 +103,26 @@ public class UserServiceImplTest {
         assertThat(user.getLastName()).isEqualTo(updateUserDto().getLastName());
         assertThat(user.getPhone()).isEqualTo(updateUserDto().getPhone());
         assertThat(user.getId()).isEqualTo(testUser().getId());
+
+        verify(userRepository, times(1)).findUserByEmail(anyString());
+        verify(userRepository, times(1)).save(any(User.class));
+        verify(authentication, times(1)).getName();
+        verify(userMapper, times(1)).userToUpdateUserDto(any(User.class));
     }
 
     @Test
-    public void updateAvatarTest() {
+    public void updateAvatarTest() throws IOException {
+
+        MultipartFile imageFile = new MockMultipartFile("avatar", avatar().getFilePath(), avatar().getFileExtension(), "test".getBytes());
+
+        when(authentication.getName()).thenReturn(testUser().getEmail());
+        when(userRepository.findUserByEmail(authentication.getName())).thenReturn(Optional.ofNullable(testUser()));
+        when(imageService.saveImageFile(any(MultipartFile.class))).thenReturn(avatar());
+
+        boolean result = userService.updateAvatar(imageFile, authentication);
+
+        verify(userRepository, times(1)).saveAndFlush(any(User.class));
+        assertTrue(result);
 
     }
 
@@ -122,8 +148,8 @@ public class UserServiceImplTest {
         Image avatar = new Image();
 
         avatar.setId(10);
-        avatar.setFilePath("/image/1");
-        avatar.setFileExtension("fileExtension");
+        avatar.setFilePath("image\\54-min.jpg");
+        avatar.setFileExtension("jpg");
         avatar.setFileSize(100);
         avatar.setMediaType("mediaType");
 
