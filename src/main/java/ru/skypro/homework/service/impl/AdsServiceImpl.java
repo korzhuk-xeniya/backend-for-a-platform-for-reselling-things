@@ -53,14 +53,19 @@ public class AdsServiceImpl implements AdsService {
      * @return объявление
      */
     @Override
-    public Ads saveAd(CreateOrUpdateAdDto createOrUpdateAdDto, String email, MultipartFile imageFile) throws IOException {
+    public Ads saveAd(CreateOrUpdateAdDto createOrUpdateAdDto, String email, MultipartFile imageFile)  {
         log.info("запустился метод сохранения объявления");
+        try {
         Ads saveAds = adsMapper.CreateOrUpdateAdDtoToAds(createOrUpdateAdDto);
         saveAds.setUser(userRepository.findUserByEmail(email).orElseThrow());
         Image image = imageService.saveImageFile(imageFile);
         saveAds.setImage(image);
         adsRepository.saveAndFlush(saveAds);
         return saveAds;
+        } catch (IOException e){
+            log.error("Ошибка при сохранении объявления", e);
+            throw new RuntimeException("Ошибка при сохранении объявления", e);
+        }
     }
 
     /**
@@ -77,7 +82,7 @@ public class AdsServiceImpl implements AdsService {
 
     @Override
     public boolean removeAd(String email, Integer id) {
-        Ads ads = adsRepository.findById(id).orElseThrow();
+        Ads ads = adsRepository.findById(id).orElseThrow(AdsNotFoundException::new);
         User adOwner = ads.getUser();
         if (userOrAdminService.isUserOrAdmin(email, adOwner)) {
             log.info("запустился метод удаления объявления");

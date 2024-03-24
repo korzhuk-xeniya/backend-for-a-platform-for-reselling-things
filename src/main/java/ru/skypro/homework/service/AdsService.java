@@ -12,7 +12,7 @@ import java.util.List;
 public interface AdsService {
     List<Ads> getAllAds();
 
-    Ads saveAd(CreateOrUpdateAdDto createOrUpdateAdDto, String name, MultipartFile file) throws IOException;
+    Ads saveAd(CreateOrUpdateAdDto createOrUpdateAdDto, String name, MultipartFile file);
 
     Ads getAd(Integer id);
 

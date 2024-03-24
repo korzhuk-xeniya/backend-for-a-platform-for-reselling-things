@@ -61,9 +61,14 @@ public class AdsController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<AdDto> addAd(@Valid @RequestPart(name = "properties") CreateOrUpdateAdDto createOrUpdateAdDto,
                                        @RequestPart(name = "image", required = false) MultipartFile file,
-                                       Authentication authentication) throws IOException {
-        log.info("Добавление объявления");
-        return ResponseEntity.ok(adsMapper.adsToAdsDto(adsService.saveAd(createOrUpdateAdDto, authentication.getName(), file)));
+                                       Authentication authentication) {
+        try {
+            log.info("Добавление объявления");
+            return ResponseEntity.ok(adsMapper.adsToAdsDto(adsService.saveAd(createOrUpdateAdDto, authentication.getName(), file)));
+        } catch (Exception e){
+            log.error("Ошибка при добавлении объявления", e);
+            throw new RuntimeException("Ошибка при добавлении объявления", e);
+        }
     }
 
 

@@ -1,14 +1,12 @@
 package ru.skypro.homework.service.impl;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.entity.Image;
-import ru.skypro.homework.exception.ImageNotFountException;
+import ru.skypro.homework.exception.ImageNotFoundException;
 import ru.skypro.homework.repository.ImageRepository;
 import ru.skypro.homework.service.ImageService;
 
@@ -34,7 +32,8 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public void transferImageToResponse(Integer id, HttpServletResponse response) {
         log.info("Был вызван метод для трансформации изображения для ответа{}{}", id, response);
-        Image image = imageRepository.findById(id).orElseThrow(ImageNotFountException::new);
+        Image image = imageRepository.findById(id)
+                .orElseThrow(()->new ImageNotFoundException("Не удалось найти изображение по id: "+ id));
         try (InputStream is = Files.newInputStream(Path.of(image.getFilePath()));
              OutputStream os = response.getOutputStream()) {
             response.setStatus(200);
@@ -43,7 +42,7 @@ public class ImageServiceImpl implements ImageService {
             is.transferTo(os);
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to transfer image to response ",e);
         }
     }
     @Override
