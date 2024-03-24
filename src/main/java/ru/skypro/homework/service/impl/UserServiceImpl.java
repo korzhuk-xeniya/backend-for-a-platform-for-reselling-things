@@ -40,11 +40,18 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findUserByEmail(authentication
                 .getName()).orElseThrow(() -> new UserNotFoundException());
 
-        if (!passwordEncoder.matches(newPassword.getCurrentPassword(), user.getPassword())) {
+//        if (!passwordEncoder.matches(newPassword.getCurrentPassword(), user.getPassword())) {
+//            throw new WrongPasswordException();
+//        }
+
+//        user.setPassword(passwordEncoder.encode(newPassword.getNewPassword()));
+//        userRepository.save(user);
+
+        if (!newPassword.getCurrentPassword().equals(user.getPassword())) {
             throw new WrongPasswordException();
         }
 
-        user.setPassword(passwordEncoder.encode(newPassword.getNewPassword()));
+        user.setPassword(newPassword.getNewPassword());
         userRepository.save(user);
 
         log.info("Вызван метод сервиса для обновления пароля пользователя с ID: {}", user.getId());
