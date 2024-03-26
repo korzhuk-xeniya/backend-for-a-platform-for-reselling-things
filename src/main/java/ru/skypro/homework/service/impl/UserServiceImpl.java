@@ -89,7 +89,6 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
-
     @Override
     public String getImageByUserId(Integer userId) {
         User user = new User();
