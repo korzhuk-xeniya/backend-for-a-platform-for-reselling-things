@@ -89,14 +89,12 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
-
     @Override
     public String getImageByUserId(Integer userId) {
         User user = new User();
         String filePath = user.getAvatar().getFilePath();
 
         log.info("Вызван метод сервиса для обновления пароля пользователя с ID: {}", user.getId());
-
         return filePath;
     }
 }
