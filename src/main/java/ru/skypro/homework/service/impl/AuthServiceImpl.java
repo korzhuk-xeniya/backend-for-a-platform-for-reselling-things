@@ -21,7 +21,6 @@ public class AuthServiceImpl implements AuthService {
     public AuthServiceImpl(PasswordEncoder encoder, SecurityUserService manager) {
         this.encoder = encoder;
         this.manager = manager;
-
     }
 
     @Override
@@ -36,7 +35,6 @@ public class AuthServiceImpl implements AuthService {
         return encoder.matches(password, userDetails.getPassword());
 
     }
-
 
     @Override
     public boolean register(Register register) {

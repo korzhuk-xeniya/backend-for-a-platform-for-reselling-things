@@ -34,7 +34,6 @@ public class SecurityUserService implements UserDetailsManager {
         return new MyUserDetails(user);
 
     }
-
     @Override
     public void createUser(UserDetails user) {
         User user1 = new User(user.getUsername(), user.getPassword(),
