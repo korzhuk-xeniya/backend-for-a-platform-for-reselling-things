@@ -95,7 +95,6 @@ public class UserServiceImpl implements UserService {
         String filePath = user.getAvatar().getFilePath();
 
         log.info("Вызван метод сервиса для обновления пароля пользователя с ID: {}", user.getId());
-
         return filePath;
     }
 }
