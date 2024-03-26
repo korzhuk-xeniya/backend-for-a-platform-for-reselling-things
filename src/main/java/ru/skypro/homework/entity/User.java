@@ -1,17 +1,14 @@
 package ru.skypro.homework.entity;
 
 import lombok.Data;
-import org.hibernate.validator.constraints.Length;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 import ru.skypro.homework.dto.Role;
-
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
+
 
 @Entity
+@Component
 @Data
 @Table(name = "users")
 public class User {
@@ -47,4 +44,11 @@ public class User {
     @JoinColumn(name = "AVATAR_ID")
     private Image avatar;
 
+    public User(String email, String password, Role role) {
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+    public User() {
+    }
 }

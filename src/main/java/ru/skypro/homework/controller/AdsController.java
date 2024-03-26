@@ -35,6 +35,7 @@ import java.io.IOException;
 @RequestMapping("/ads")
 public class AdsController {
 
+
     private final AdsService adsService;
     private final AdsMapper adsMapper;
 
@@ -82,6 +83,7 @@ public class AdsController {
 
     })
     @GetMapping("/{id}")
+
     public ResponseEntity<ExtendedAdDto> getInfoAd(@Parameter(in = ParameterIn.PATH, description = "id объявления",
             required=true, schema=@Schema()) @PathVariable("id") Integer id
     )  {
@@ -147,6 +149,7 @@ public class AdsController {
         }
     }
 
+
     @Operation(summary = "Обновление картинки объявления")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
@@ -157,6 +160,7 @@ public class AdsController {
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "Not found")
     })
+
 
     @PatchMapping(value = "/{id}/image", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> updateImageAd(@NotNull Authentication authentication,
@@ -169,6 +173,7 @@ public class AdsController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
 }
 
 

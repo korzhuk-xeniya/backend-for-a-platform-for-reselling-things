@@ -14,6 +14,5 @@ public interface UserService {
     UpdateUserDto updateAuthUserInfo(UpdateUserDto updateUser, Authentication authentication);
     boolean updateAvatar(MultipartFile avatar, Authentication authentication) throws IOException;
 
-    String getImageByUserId(Integer id);
-
+    String getImageByUserId(Integer userId);
 }

@@ -104,14 +104,14 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован")
     })
 //    @PatchMapping("/me/image")
-@PatchMapping(value = "/me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PatchMapping(value = "/me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 
     public ResponseEntity<Void> updateAvatar(@NotNull Authentication authentication, @Parameter(description = "") @Valid @RequestPart(value="image",
             required=false)MultipartFile image) throws IOException {
 
         log.info("Вызван метод контроллера для обновления аватара");
 
-       if (userService.updateAvatar(image, authentication)) {
+        if (userService.updateAvatar(image, authentication)) {
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
