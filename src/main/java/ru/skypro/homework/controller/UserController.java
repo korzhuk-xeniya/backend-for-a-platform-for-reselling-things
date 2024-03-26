@@ -1,6 +1,7 @@
 package ru.skypro.homework.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -8,8 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,6 +23,10 @@ import ru.skypro.homework.entity.User;
 import ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.service.UserService;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import java.io.IOException;
+
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
@@ -30,16 +34,9 @@ import ru.skypro.homework.service.UserService;
 @RequestMapping("/users")
 public class UserController {
 
-    Logger log = LoggerFactory.getLogger(UserController.class);
-
     private final UserService userService;
     private final UserMapper userMapper;
 
-
-//    @Autowired
-//    private final HttpServletRequest request;
-//    @Autowired
-//    private final ObjectMapper objectMapper;
 
     @Operation(summary = "Обновление пароля")
     @ApiResponses(value = {
@@ -54,9 +51,10 @@ public class UserController {
     @PostMapping("/set_password")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity setPassword(@RequestBody NewPasswordDto newPassword, Authentication authentication) {
-        log.info("Вызван метод обновления пароля");
-//        return ResponseEntity.ok(new NewPasswordDto());
-        return ResponseEntity.ok(userService.setPassword(newPassword, authentication));
+
+        log.info("Вызван метод контроллера для обновления пароля пользователя с login: {}", authentication.getName());
+        userService.setPassword(newPassword, authentication);
+        return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "Получение информации об авторизованном пользователе")
@@ -70,10 +68,11 @@ public class UserController {
     })
     @GetMapping("/me")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<UserDto> getAuthUserInfo() {
-        log.info("Вызван метод получения информации об авторизованном пользователе");
-        return ResponseEntity.ok(new UserDto());
-//            return ResponseEntity.ok(userService.getAuthUserInfo());
+    public UserDto getAuthUserInfo(Authentication authentication) {
+
+        log.info("Вызван метод контроллера для получения информации об авторизованном пользователе с login: {}", authentication.getName());
+        User user = userService.getAuthUserInfo(authentication);
+        return userMapper.userToUserDto(user);
 
     }
 
@@ -88,10 +87,11 @@ public class UserController {
     })
     @PatchMapping("/me")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity updateAuthUserInfo(@RequestBody UpdateUserDto updateUser) {
-        log.info("Вызван метод изменения информации об авторизованном пользователе");
-        return ResponseEntity.ok(new UpdateUserDto());
-//            return ResponseEntity.ok(userService.updateAuthUserInfo(updateUser));
+    public ResponseEntity updateAuthUserInfo(@RequestBody UpdateUserDto updateUser, Authentication authentication) {
+
+        log.info("Вызван метод контроллера для изменения информации об авторизованном пользователе с login: {}", authentication.getName());
+
+        return ResponseEntity.ok(userService.updateAuthUserInfo(updateUser, authentication));
     }
 
     @Operation(summary = "Обновление аватара авторизованного пользователя")
@@ -103,29 +103,18 @@ public class UserController {
                                     schema = @Schema(implementation = MultipartFile.class)))),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован")
     })
-    @PatchMapping("/me/image")
-    public ResponseEntity updateAvatar(@RequestBody MultipartFile avatar) {
-        log.info("Вызван метод обновления аватара");
-//        String accept = request.getHeader("Accept");
-        return ResponseEntity.ok(null);
-//        return ResponseEntity.ok(userService.updateAvatar(avatar));
+//    @PatchMapping("/me/image")
+    @PatchMapping(value = "/me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+
+    public ResponseEntity<Void> updateAvatar(@NotNull Authentication authentication, @Parameter(description = "") @Valid @RequestPart(value="image",
+            required=false)MultipartFile image) throws IOException {
+
+        log.info("Вызван метод контроллера для обновления аватара пользователя с login: {}", authentication.getName());
+
+        if (userService.updateAvatar(image, authentication)) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
-
-    @GetMapping("/image/{id}")
-    public String getImageByUserId(@PathVariable Integer userId) {
-        return userService.getImageByUserId(userId);
-    }
-
-    /**
-     * Проверка является ли пользователь авторизованным
-     */
-//    private boolean isUserAuthorized() {
-//        HttpSession session = request.getSession(false);
-//
-//        if (session != null && session.getAttribute("userId") != null) {
-//            return true;
-//        }
-//        return false;
-//    }
-
 }

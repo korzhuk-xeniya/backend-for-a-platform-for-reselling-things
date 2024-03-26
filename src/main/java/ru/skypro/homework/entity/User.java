@@ -1,19 +1,14 @@
 package ru.skypro.homework.entity;
 
 import lombok.Data;
-import org.hibernate.validator.constraints.Length;
-import lombok.*;
-import org.hibernate.proxy.HibernateProxy;
+import org.springframework.stereotype.Component;
 import ru.skypro.homework.dto.Role;
-
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.Objects;
+
 
 @Entity
+@Component
 @Data
 @Table(name = "users")
 public class User {
@@ -23,7 +18,7 @@ public class User {
     @Column(name = "ID", nullable = false)
     private Integer id;
 
-    @Column(name = "EMAIL", nullable = false)
+    @Column(name = "EMAIL", nullable = true)
     private String email;
 
     @Column(name = "FIRST_NAME", nullable = false)
@@ -49,4 +44,11 @@ public class User {
     @JoinColumn(name = "AVATAR_ID")
     private Image avatar;
 
+    public User(String email, String password, Role role) {
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+    public User() {
+    }
 }

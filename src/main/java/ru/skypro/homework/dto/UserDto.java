@@ -32,4 +32,14 @@ public class UserDto {
 
     @Schema(description = "ссылка на аватар пользователя")
     private String image;
+
+
+    public UserDto(String firstName, String lastName, String phone) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+    }
+
+    public UserDto() {
+    }
 }
