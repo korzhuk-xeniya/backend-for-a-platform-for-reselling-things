@@ -2,8 +2,11 @@ package ru.skypro.homework.mapper;
 
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
+import org.springframework.transaction.annotation.Transactional;
 import ru.skypro.homework.dto.AdDto;
 import ru.skypro.homework.dto.AdsDto;
+import ru.skypro.homework.dto.CreateOrUpdateAdDto;
+import ru.skypro.homework.dto.ExtendedAdDto;
 import ru.skypro.homework.entity.Ads;
 import ru.skypro.homework.entity.Image;
 import ru.skypro.homework.entity.User;
@@ -13,7 +16,7 @@ import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-
+@Transactional
 class AdsMapperTest {
     private final AdsMapper adsMapper = Mappers.getMapper(AdsMapper.class);
 
@@ -35,7 +38,6 @@ class AdsMapperTest {
         //then
         assertThat(adDto).isNotNull();
         assertThat(adDto.getAuthor()).isEqualTo(testUser.getId().intValue());
-//        assertThat(adDto.getImage()).isNull();
         assertThat(adDto.getPk()).isEqualTo(ads.getId().intValue());
         assertThat(adDto.getPrice()).isEqualTo(ads.getPrice().intValue());
         assertThat(adDto.getTitle()).isEqualTo(ads.getTitle());
@@ -71,13 +73,47 @@ class AdsMapperTest {
 
     @Test
     void createOrUpdateAdDtoToAds() {
+        //given
+        CreateOrUpdateAdDto createOrUpdateAdDto = new CreateOrUpdateAdDto();
+        createOrUpdateAdDto.setDescription("Test description");
+        createOrUpdateAdDto.setPrice(10);
+        createOrUpdateAdDto.setTitle("Test dto");
+
+        //when
+        Ads ads = adsMapper.createOrUpdateAdDtoToAds(createOrUpdateAdDto);
+        System.out.println(ads);
+
+        //then
+        assertThat(ads).isNotNull();
+        assertThat(ads.getId()).isNull();
+        assertThat(ads.getUser()).isNull();
+        assertThat(ads.getPrice().intValue()).isEqualTo(createOrUpdateAdDto.getPrice());
+        assertThat(ads.getTitle()).isEqualTo(createOrUpdateAdDto.getTitle());
+        assertThat(ads.getDescription()).isEqualTo(createOrUpdateAdDto.getDescription());
+        assertThat(ads.getImage()).isNull();
+
     }
 
     @Test
     void toExtendedAdDto() {
-    }
+        //given
+        User testUser = new User();
+        testUser.setId(60);
+        Ads ads = new Ads();
+        ads.setId(10);
+        ads.setPrice(5000);
+        ads.setTitle("Test ads");
+        ads.setUser(testUser);
 
-    @Test
-    void updateAdsFromCreateOrUpdateAdDto() {
+        //when
+        ExtendedAdDto extendedAdDto = adsMapper.toExtendedAdDto(ads);
+        System.out.println(extendedAdDto);
+
+        //then
+        assertThat(extendedAdDto).isNotNull();
+        assertThat(extendedAdDto.getAuthorFirstName()).isNull();
+        assertThat(extendedAdDto.getPk()).isEqualTo(ads.getId().intValue());
+        assertThat(extendedAdDto.getPrice()).isEqualTo(ads.getPrice().intValue());
+        assertThat(extendedAdDto.getTitle()).isEqualTo(ads.getTitle());
     }
 }
