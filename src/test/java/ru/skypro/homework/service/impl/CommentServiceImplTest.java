@@ -17,6 +17,8 @@ import ru.skypro.homework.dto.Role;
 import ru.skypro.homework.entity.Ads;
 import ru.skypro.homework.entity.Comment;
 import ru.skypro.homework.entity.User;
+import ru.skypro.homework.exception.CommentNotFoundException;
+import ru.skypro.homework.exception.WrongPasswordException;
 import ru.skypro.homework.mapper.CommentMapper;
 import ru.skypro.homework.repository.AdsRepository;
 import ru.skypro.homework.repository.CommentRepository;
@@ -30,9 +32,11 @@ import java.util.Optional;
 
 import static liquibase.repackaged.org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -81,14 +85,14 @@ class CommentServiceImplTest {
 //        when(userRepository.save(any(User.class))).thenReturn(testUser);
 //        when(adsRepository.findById(anyInt())).thenReturn(Optional.ofNullable(testAds));
 //        when(commentRepository.save(any(Comment.class))).thenReturn(testComment);
-//        when(userService.getAuthUserInfo()).thenReturn(null);
-//
+////        when(userService.getAuthUserInfo(auth)).thenReturn();
+//        when(userRepository.findUserByEmail(anyString())).thenReturn(Optional.ofNullable(testUser));
 //        Comment result = commentService.addCommentToAds(testAds.getId(), text,auth);
 //
-//        assertThat(result).isNotNull();
-//        assertThat(result.getText()).isEqualTo(testComment.getText());
-//        assertThat(result.getCreatedAt()).isEqualTo(testComment.getCreatedAt());
-//
+//        assertThat(result).isNull();
+////        assertThat(result.getText()).isEqualTo(testComment.getText());
+////        assertThat(result.getCreatedAt()).isEqualTo(testComment.getCreatedAt());
+////
     }
 
     @Test
@@ -105,5 +109,12 @@ class CommentServiceImplTest {
 
         assertThat(result).isNotNull();
         assertThat(result.contains(testComment));
+    }
+    @Test
+    void shouldThrowCommentNotFoundException_WhenGetCommentsWithWrongIdAndAuthorId() {
+//        when(commentRepository.findById(anyInt())).thenReturn(Optional.empty());
+//
+//        assertThatExceptionOfType(CommentNotFoundException.class)
+//                .isThrownBy(() -> commentService.update(testComment.getId(), testUser.getId(),text,auth));
     }
 }
