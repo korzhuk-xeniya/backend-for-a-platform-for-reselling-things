@@ -56,7 +56,7 @@ public class AdsServiceImpl implements AdsService {
     public Ads saveAd(CreateOrUpdateAdDto createOrUpdateAdDto, String email, MultipartFile imageFile)  {
         log.info("запустился метод сохранения объявления");
         try {
-        Ads saveAds = adsMapper.CreateOrUpdateAdDtoToAds(createOrUpdateAdDto);
+        Ads saveAds = adsMapper.createOrUpdateAdDtoToAds(createOrUpdateAdDto);
         saveAds.setUser(userRepository.findUserByEmail(email).orElseThrow());
         Image image = imageService.saveImageFile(imageFile);
         saveAds.setImage(image);
