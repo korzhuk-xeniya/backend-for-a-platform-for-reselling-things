@@ -23,6 +23,7 @@ import ru.skypro.homework.mapper.CommentMapper;
 import ru.skypro.homework.repository.AdsRepository;
 import ru.skypro.homework.repository.CommentRepository;
 import ru.skypro.homework.repository.UserRepository;
+import ru.skypro.homework.service.UserOrAdminService;
 import ru.skypro.homework.service.UserService;
 
 import java.math.BigDecimal;
@@ -36,8 +37,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOf
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CommentServiceImplTest {
@@ -49,6 +49,8 @@ class CommentServiceImplTest {
     private CommentRepository commentRepository;
     @Mock
     private UserService userService;
+    @Mock
+    private UserOrAdminService userOrAdminService;
     @Spy
     private CommentMapper commentMapper;
     @InjectMocks
@@ -57,14 +59,18 @@ class CommentServiceImplTest {
     private Comment testComment;
     private CreateOrUpdateComment text;
     private User testUser;
-
+@Mock
     private Authentication auth;
     @BeforeEach
     void init() {
         testUser = new User();
         testUser.setId(100);
         testUser.setEmail("test@test.com");
-        auth = new UsernamePasswordAuthenticationToken(testUser, null);
+        testUser.setPassword("123456789");
+        testUser.setRole(Role.USER);
+        auth = new UsernamePasswordAuthenticationToken(testUser, testUser.getPassword());
+
+
 
         testAds = new Ads();
         testAds.setId(1);
@@ -82,17 +88,20 @@ class CommentServiceImplTest {
 
     @Test
     void addCommentToAds_() {
-//        when(userRepository.save(any(User.class))).thenReturn(testUser);
-//        when(adsRepository.findById(anyInt())).thenReturn(Optional.ofNullable(testAds));
-//        when(commentRepository.save(any(Comment.class))).thenReturn(testComment);
-////        when(userService.getAuthUserInfo(auth)).thenReturn();
-//        when(userRepository.findUserByEmail(anyString())).thenReturn(Optional.ofNullable(testUser));
-//        Comment result = commentService.addCommentToAds(testAds.getId(), text,auth);
+        when(userRepository.save(any(User.class))).thenReturn(testUser);
+        when(adsRepository.findById(anyInt())).thenReturn(Optional.ofNullable(testAds));
+        when(commentRepository.save(any(Comment.class))).thenReturn(testComment);
+        when(auth.getName()).thenReturn(testUser.getEmail());
+        when(userRepository.findUserByEmail(auth.getName())).thenReturn(Optional.ofNullable(testUser));
+        when(userOrAdminService.isUser(testUser.getEmail(),testUser)).thenReturn(true);
+        userRepository.save(testUser);
+        adsRepository.saveAndFlush(testAds);
+        Comment result = commentService.addCommentToAds(testAds.getId(), text,auth);
+
+        assertThat(result).isNotNull();
+        assertThat(result.getText()).isEqualTo(testComment.getText());
+        assertThat(result.getCreatedAt()).isEqualTo(testComment.getCreatedAt());
 //
-//        assertThat(result).isNull();
-////        assertThat(result.getText()).isEqualTo(testComment.getText());
-////        assertThat(result.getCreatedAt()).isEqualTo(testComment.getCreatedAt());
-////
     }
 
     @Test
@@ -101,6 +110,18 @@ class CommentServiceImplTest {
 
     @Test
     void update() {
+        when(commentRepository.findById(anyInt())).thenReturn(Optional.of(testComment));
+        when(userOrAdminService.isUserOrAdmin(testUser.getEmail(),testUser)).thenReturn(false);
+        when(commentRepository.save(any())).thenReturn(testComment);
+        when(auth.getName()).thenReturn(testUser.getEmail());
+        when(userRepository.findUserByEmail(auth.getName())).thenReturn(Optional.ofNullable(testUser));
+
+        Comment result =commentService.update(testAds.getId(), testComment.getId(), text, auth);
+
+        verify(commentRepository, atMostOnce()).save(testComment);
+        verify(commentMapper, atLeastOnce()).toDTO(testComment);
+
+        assertThat(result).isNotNull();
     }
 
     @Test
@@ -112,9 +133,9 @@ class CommentServiceImplTest {
     }
     @Test
     void shouldThrowCommentNotFoundException_WhenGetCommentsWithWrongIdAndAuthorId() {
-//        when(commentRepository.findById(anyInt())).thenReturn(Optional.empty());
-//
-//        assertThatExceptionOfType(CommentNotFoundException.class)
-//                .isThrownBy(() -> commentService.update(testComment.getId(), testUser.getId(),text,auth));
+        when(commentRepository.findById(anyInt())).thenReturn(Optional.empty());
+
+        assertThatExceptionOfType(CommentNotFoundException.class)
+                .isThrownBy(() -> commentService.update(testComment.getId(), testUser.getId(),text,auth));
     }
 }
