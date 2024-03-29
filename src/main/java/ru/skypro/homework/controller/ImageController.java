@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import ru.skypro.homework.exception.ImageNotFoundException;
 import ru.skypro.homework.service.ImageService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -25,7 +26,7 @@ public class ImageController {
            imageService.transferImageToResponse(id, response);
        } catch(Exception e){
            log.error("Ошибка при передаче изображения в ответ", e);
-           throw new RuntimeException("Ошибка при передаче изображения в ответ", e);
+           throw new ImageNotFoundException("Ошибка при передаче изображения в ответ", e);
        }
     }
 }

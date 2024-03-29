@@ -18,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.*;
+import ru.skypro.homework.exception.AdsNotFoundException;
 import ru.skypro.homework.mapper.AdsMapper;
 import ru.skypro.homework.service.AdsService;
 import ru.skypro.homework.service.ImageService;
@@ -68,7 +69,7 @@ public class AdsController {
             return ResponseEntity.ok(adsMapper.adsToAdsDto(adsService.saveAd(createOrUpdateAdDto, authentication.getName(), file)));
         } catch (Exception e){
             log.error("Ошибка при добавлении объявления", e);
-            throw new RuntimeException("Ошибка при добавлении объявления", e);
+            throw new AdsNotFoundException("Ошибка при добавлении объявления", e);
         }
     }
 
