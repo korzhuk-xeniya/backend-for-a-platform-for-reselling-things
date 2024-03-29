@@ -64,7 +64,7 @@ public class AdsServiceImpl implements AdsService {
         return saveAds;
         } catch (IOException e){
             log.error("Ошибка при сохранении объявления", e);
-            throw new RuntimeException("Ошибка при сохранении объявления", e);
+            throw new AdsNotFoundException("Ошибка при сохранении объявления", e);
         }
     }
 
