@@ -80,6 +80,12 @@ public class AdsServiceImpl implements AdsService {
 
     }
 
+    /**
+     * @param email email
+     * @param id id объявления
+     * @return
+     * удаление объявления
+     */
     @Override
     public boolean removeAd(String email, Integer id) {
         Ads ads = adsRepository.findById(id).orElseThrow(AdsNotFoundException::new);
@@ -98,6 +104,12 @@ public class AdsServiceImpl implements AdsService {
 
     }
 
+    /**
+     * @param id id объявления
+     * @param createOrUpdateAdDto заголовок,цена, описание
+     * @param name email
+     * @return объявление
+     */
     @Override
     public Ads updateAds(Integer id, CreateOrUpdateAdDto createOrUpdateAdDto, String name) {
         Optional<Ads> optionalAds = adsRepository.findById(id);
