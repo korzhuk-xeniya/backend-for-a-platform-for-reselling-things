@@ -5,14 +5,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.core.Authentication;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
+import ru.skypro.homework.dto.NewPasswordDto;
 import ru.skypro.homework.dto.Role;
 import ru.skypro.homework.dto.UpdateUserDto;
 import ru.skypro.homework.entity.Image;
@@ -25,7 +23,6 @@ import java.io.IOException;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -43,13 +40,35 @@ public class UserServiceImplTest {
     @Mock
     private Authentication authentication;
     @Mock
+    private PasswordEncoder passwordEncoder;
+    @Mock
     private UserMapper userMapper;
     @InjectMocks
     private UserServiceImpl userService;
 
     @Test
     public void setPasswordTest() {
-        //TODO
+        User user = testUser();
+        NewPasswordDto newPassword = new NewPasswordDto();
+        newPassword.setCurrentPassword(passwordEncoder.encode(user.getPassword()));
+        newPassword.setNewPassword("newpassword");
+
+        given(userRepository.findUserByEmail(anyString())).willReturn(Optional.of(user));
+
+        User updatedUser = user;
+        user.setPassword(newPassword.getNewPassword());
+
+        when(passwordEncoder.matches(
+                eq(passwordEncoder.encode(user.getPassword())),
+                eq(newPassword.getNewPassword()))
+        ).thenReturn(true);
+        given(userRepository.save(any(User.class))).willReturn(updatedUser);
+        given(authentication.getName()).willReturn(user.getEmail());
+
+        userService.setPassword(newPassword, authentication);
+
+        verify(userRepository, times(1)).save(any(User.class));
+
     }
     @Test
     public void getAuthUserInfoTest() {

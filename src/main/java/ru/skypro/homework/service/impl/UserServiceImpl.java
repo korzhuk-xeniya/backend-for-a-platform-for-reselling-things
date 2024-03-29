@@ -77,8 +77,8 @@ public class UserServiceImpl implements UserService {
      * метод для обновления информации о пользователе
      */
     @Override
-    public UpdateUserDto updateAuthUserInfo(UpdateUserDto updateUser, Authentication authenticatio) {
-        User oldUser = userRepository.findUserByEmail(authenticatio
+    public UpdateUserDto updateAuthUserInfo(UpdateUserDto updateUser, Authentication authentication) {
+        User oldUser = userRepository.findUserByEmail(authentication
                 .getName()).orElseThrow(() -> new UserNotFoundException());
 
         oldUser.setFirstName(updateUser.getFirstName());
@@ -112,12 +112,4 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
-    @Override
-    public String getImageByUserId(Integer userId) {
-        User user = new User();
-        String filePath = user.getAvatar().getFilePath();
-
-        log.info("Вызван метод сервиса для обновления пароля пользователя с ID: {}", user.getId());
-        return filePath;
-    }
 }
