@@ -23,6 +23,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @ExtendWith(MockitoExtension.class)
 class CommentMapperTest {
     private final CommentMapper commentMapper= Mappers.getMapper(CommentMapper.class);
+
     @Test
     void toDTO_shouldMapCommentToCommentDto() {
         //given

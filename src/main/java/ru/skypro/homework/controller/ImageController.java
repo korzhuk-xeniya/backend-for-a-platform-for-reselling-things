@@ -19,6 +19,10 @@ import java.io.IOException;
 public class ImageController {
     private final ImageService imageService;
 
+    /**
+     * @param id
+     * @param response
+     */
     @GetMapping("/image/{id}")
     public void transferImageToResponse(@PathVariable Integer id, HttpServletResponse response) {
        try {

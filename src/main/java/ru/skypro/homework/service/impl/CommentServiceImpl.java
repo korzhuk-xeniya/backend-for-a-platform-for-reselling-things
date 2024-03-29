@@ -74,6 +74,13 @@ public class CommentServiceImpl implements CommentService {
 
     }
 
+    /**
+     * @param adId id объявления
+     * @param commentId id комментария
+     * @param text новый текст
+     * @param authentication авторизация
+     * @return
+     */
     @Override
     public Comment update(int adId, int commentId, CreateOrUpdateComment text, Authentication authentication) {
         log.info("Был вызван метод для обновления комментария к объявлению{},{},{}",adId,commentId,authentication);

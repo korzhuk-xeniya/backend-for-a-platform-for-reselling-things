@@ -39,6 +39,9 @@ public class AdsController {
     private final AdsService adsService;
     private final AdsMapper adsMapper;
 
+    /**
+     * @return все объявления
+     */
     @Operation(summary = "Получение всех объявлений")
     @ApiResponse(responseCode = "200",
             description = "OK",
@@ -52,6 +55,13 @@ public class AdsController {
         //        return ResponseEntity.ok().build();
     }
 
+    /**
+     * @param createOrUpdateAdDto заголовок, цена, описание
+     * @param file изображение
+     * @param authentication авторизация
+     * @return
+     * добавление объявления
+     */
     @Operation(summary = "Добавление объявления")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Объявление добавлено",
@@ -73,6 +83,10 @@ public class AdsController {
     }
 
 
+    /**
+     * @param id id объявления
+     * @return информация об объявлении
+     */
     @Operation(summary = "Получение информации об объявлении")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
@@ -91,6 +105,12 @@ public class AdsController {
         return ResponseEntity.ok(adsMapper.toExtendedAdDto(adsService.getAd(id)));
     }
 
+    /**
+     * @param id id объявления
+     * @param authentication авторизация
+     * @return
+     * удаление объявления
+     */
     @Operation(summary = "Удаление объявления")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "No Content"),
@@ -108,6 +128,12 @@ public class AdsController {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
+    /**
+     * @param id id объявления
+     * @param authentication авторизация
+     * @param createOrUpdateAdDto заголовок, цена, описание
+     * @return
+     */
     @Operation(summary = "Обновление информации об объявлении")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
@@ -130,6 +156,10 @@ public class AdsController {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
+    /**
+     * @param authentication авторизация
+     * @return объявления пользователя
+     */
     @Operation(summary = "Получение объявлений авторизованного пользователя")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
@@ -150,6 +180,12 @@ public class AdsController {
     }
 
 
+    /**
+     * @param authentication авторизация
+     * @param id id объявления
+     * @param image изображение
+     * @return
+     */
     @Operation(summary = "Обновление картинки объявления")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
