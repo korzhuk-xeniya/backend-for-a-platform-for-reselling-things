@@ -103,7 +103,6 @@ public class UserController {
                                     schema = @Schema(implementation = MultipartFile.class)))),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован")
     })
-//    @PatchMapping("/me/image")
     @PatchMapping(value = "/me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 
     public ResponseEntity<Void> updateAvatar(@NotNull Authentication authentication, @Parameter(description = "") @Valid @RequestPart(value="image",
