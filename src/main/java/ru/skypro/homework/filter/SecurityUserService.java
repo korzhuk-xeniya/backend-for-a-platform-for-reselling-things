@@ -23,16 +23,11 @@ public class SecurityUserService implements UserDetailsManager {
     private final UserRepository userRepository;
 
 
-
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        Optional<User> byEmail = userRepository.findUserByEmail(userName);
-        if (byEmail.isEmpty()) {
-            throw new UsernameNotFoundException("Пользователь не найден");
-        }
-        User user = byEmail.get();
+        User user = userRepository.findUserByEmail(userName)
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
         return new MyUserDetails(user);
-
     }
     @Override
     public void createUser(UserDetails user) {
