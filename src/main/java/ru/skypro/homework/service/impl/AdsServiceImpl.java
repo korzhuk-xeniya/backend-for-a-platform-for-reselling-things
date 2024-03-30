@@ -113,8 +113,8 @@ public class AdsServiceImpl implements AdsService {
     @Override
     public Ads updateAds(Integer id, CreateOrUpdateAdDto createOrUpdateAdDto, String name) {
         Optional<Ads> optionalAds = adsRepository.findById(id);
-        if (optionalAds.isPresent()) {
-            Ads ads = optionalAds.get();
+        if (optionalAds.isPresent()) { //TODO можно заменить на orElseThrow вместо return null
+            Ads ads = optionalAds.get(); //TODO убрать из метода
             User adOwner = ads.getUser();
             if (userOrAdminService.isUserOrAdmin(name, adOwner)) {
                 log.info("запустился метод обновления объявления");
@@ -158,7 +158,7 @@ public class AdsServiceImpl implements AdsService {
             try {
                 image = imageService.saveImageFile(imageFile);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException(e); //TODO заменить exception вместо RuntimeException
             }
             ads.setImage(image);
             adsRepository.saveAndFlush(ads);

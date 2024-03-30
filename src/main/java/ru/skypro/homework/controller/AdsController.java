@@ -80,7 +80,7 @@ public class AdsController {
         } catch (Exception e){
             log.error("Ошибка при добавлении объявления", e);
             throw new AdsNotFoundException("Ошибка при добавлении объявления", e);
-        }
+        } //TODO привести в норму catch
     }
 
 
@@ -126,7 +126,7 @@ public class AdsController {
         if (adsService.removeAd(authentication.getName(), id)) {
             return ResponseEntity.ok().build();
         }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); //TODO избыточность, можно убрать
     }
 
     /**
@@ -154,7 +154,7 @@ public class AdsController {
         if (adDto != null) {
             return ResponseEntity.ok(adDto);
         }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // TODO избыточность
     }
 
     /**

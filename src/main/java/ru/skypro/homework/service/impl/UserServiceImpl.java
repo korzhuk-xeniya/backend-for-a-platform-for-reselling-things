@@ -47,13 +47,6 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(newPassword.getNewPassword()));
         userRepository.save(user);
 
-//        if (!newPassword.getCurrentPassword().equals(user.getPassword())) {
-//            throw new WrongPasswordException();
-//        }
-//
-//        user.setPassword(newPassword.getNewPassword());
-//        userRepository.save(user);
-
         log.info("Вызван метод сервиса для обновления пароля пользователя с ID: {}", user.getId());
 
     }
