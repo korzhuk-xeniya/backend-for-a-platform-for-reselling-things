@@ -103,40 +103,17 @@ public class UserController {
                                     schema = @Schema(implementation = MultipartFile.class)))),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован")
     })
-//    @PatchMapping("/me/image")
-@PatchMapping(value = "/me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PatchMapping(value = "/me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 
     public ResponseEntity<Void> updateAvatar(@NotNull Authentication authentication, @Parameter(description = "") @Valid @RequestPart(value="image",
             required=false)MultipartFile image) throws IOException {
 
-        log.info("Вызван метод контроллера для обновления аватара");
+        log.info("Вызван метод контроллера для обновления аватара пользователя с login: {}", authentication.getName());
 
-       if (userService.updateAvatar(image, authentication)) {
+        if (userService.updateAvatar(image, authentication)) {
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
-
-
-//    @GetMapping("/image/{id}")
-//    public String getImageByUserId(@PathVariable Integer userId) {
-//
-//        log.info("Вызван метод контроллера для получения аватара пользователя с ID: {}", userId);
-//
-//        return userService.getImageByUserId(userId);
-//    }
-
-    /**
-     * Проверка является ли пользователь авторизованным
-     */
-//    private boolean isUserAuthorized() {
-//        HttpSession session = request.getSession(false);
-//
-//        if (session != null && session.getAttribute("userId") != null) {
-//            return true;
-//        }
-//        return false;
-//    }
-
 }

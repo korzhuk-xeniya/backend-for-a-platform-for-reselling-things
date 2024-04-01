@@ -18,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.*;
+import ru.skypro.homework.exception.AdsNotFoundException;
 import ru.skypro.homework.mapper.AdsMapper;
 import ru.skypro.homework.service.AdsService;
 import ru.skypro.homework.service.ImageService;
@@ -35,9 +36,13 @@ import java.io.IOException;
 @RequestMapping("/ads")
 public class AdsController {
 
+
     private final AdsService adsService;
     private final AdsMapper adsMapper;
 
+    /**
+     * @return все объявления
+     */
     @Operation(summary = "Получение всех объявлений")
     @ApiResponse(responseCode = "200",
             description = "OK",
@@ -51,6 +56,13 @@ public class AdsController {
         //        return ResponseEntity.ok().build();
     }
 
+    /**
+     * @param createOrUpdateAdDto заголовок, цена, описание
+     * @param file изображение
+     * @param authentication авторизация
+     * @return
+     * добавление объявления
+     */
     @Operation(summary = "Добавление объявления")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Объявление добавлено",
@@ -61,12 +73,21 @@ public class AdsController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<AdDto> addAd(@Valid @RequestPart(name = "properties") CreateOrUpdateAdDto createOrUpdateAdDto,
                                        @RequestPart(name = "image", required = false) MultipartFile file,
-                                       Authentication authentication) throws IOException {
-        log.info("Добавление объявления");
-        return ResponseEntity.ok(adsMapper.adsToAdsDto(adsService.saveAd(createOrUpdateAdDto, authentication.getName(), file)));
+                                       Authentication authentication) {
+        try {
+            log.info("Добавление объявления");
+            return ResponseEntity.ok(adsMapper.adsToAdsDto(adsService.saveAd(createOrUpdateAdDto, authentication.getName(), file)));
+        } catch (Exception e){
+            log.error("Ошибка при добавлении объявления", e);
+            throw new AdsNotFoundException("Ошибка при добавлении объявления", e);
+        } //TODO привести в норму catch
     }
 
 
+    /**
+     * @param id id объявления
+     * @return информация об объявлении
+     */
     @Operation(summary = "Получение информации об объявлении")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
@@ -77,6 +98,7 @@ public class AdsController {
 
     })
     @GetMapping("/{id}")
+
     public ResponseEntity<ExtendedAdDto> getInfoAd(@Parameter(in = ParameterIn.PATH, description = "id объявления",
             required=true, schema=@Schema()) @PathVariable("id") Integer id
     )  {
@@ -84,6 +106,12 @@ public class AdsController {
         return ResponseEntity.ok(adsMapper.toExtendedAdDto(adsService.getAd(id)));
     }
 
+    /**
+     * @param id id объявления
+     * @param authentication авторизация
+     * @return
+     * удаление объявления
+     */
     @Operation(summary = "Удаление объявления")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "No Content"),
@@ -98,9 +126,15 @@ public class AdsController {
         if (adsService.removeAd(authentication.getName(), id)) {
             return ResponseEntity.ok().build();
         }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); //TODO избыточность, можно убрать
     }
 
+    /**
+     * @param id id объявления
+     * @param authentication авторизация
+     * @param createOrUpdateAdDto заголовок, цена, описание
+     * @return
+     */
     @Operation(summary = "Обновление информации об объявлении")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
@@ -120,9 +154,13 @@ public class AdsController {
         if (adDto != null) {
             return ResponseEntity.ok(adDto);
         }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // TODO избыточность
     }
 
+    /**
+     * @param authentication авторизация
+     * @return объявления пользователя
+     */
     @Operation(summary = "Получение объявлений авторизованного пользователя")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
@@ -142,6 +180,13 @@ public class AdsController {
         }
     }
 
+
+    /**
+     * @param authentication авторизация
+     * @param id id объявления
+     * @param image изображение
+     * @return
+     */
     @Operation(summary = "Обновление картинки объявления")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
@@ -152,6 +197,7 @@ public class AdsController {
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "Not found")
     })
+
 
     @PatchMapping(value = "/{id}/image", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> updateImageAd(@NotNull Authentication authentication,
@@ -164,6 +210,7 @@ public class AdsController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
 }
 
 

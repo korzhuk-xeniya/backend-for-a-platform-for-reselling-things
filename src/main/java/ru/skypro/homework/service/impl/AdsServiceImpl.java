@@ -53,14 +53,19 @@ public class AdsServiceImpl implements AdsService {
      * @return объявление
      */
     @Override
-    public Ads saveAd(CreateOrUpdateAdDto createOrUpdateAdDto, String email, MultipartFile imageFile) throws IOException {
+    public Ads saveAd(CreateOrUpdateAdDto createOrUpdateAdDto, String email, MultipartFile imageFile)  {
         log.info("запустился метод сохранения объявления");
-        Ads saveAds = adsMapper.CreateOrUpdateAdDtoToAds(createOrUpdateAdDto);
+        try {
+        Ads saveAds = adsMapper.createOrUpdateAdDtoToAds(createOrUpdateAdDto);
         saveAds.setUser(userRepository.findUserByEmail(email).orElseThrow());
         Image image = imageService.saveImageFile(imageFile);
         saveAds.setImage(image);
         adsRepository.saveAndFlush(saveAds);
         return saveAds;
+        } catch (IOException e){
+            log.error("Ошибка при сохранении объявления", e);
+            throw new AdsNotFoundException("Ошибка при сохранении объявления", e);
+        }
     }
 
     /**
@@ -75,9 +80,15 @@ public class AdsServiceImpl implements AdsService {
 
     }
 
+    /**
+     * @param email email
+     * @param id id объявления
+     * @return
+     * удаление объявления
+     */
     @Override
     public boolean removeAd(String email, Integer id) {
-        Ads ads = adsRepository.findById(id).orElseThrow();
+        Ads ads = adsRepository.findById(id).orElseThrow(AdsNotFoundException::new);
         User adOwner = ads.getUser();
         if (userOrAdminService.isUserOrAdmin(email, adOwner)) {
             log.info("запустился метод удаления объявления");
@@ -93,11 +104,17 @@ public class AdsServiceImpl implements AdsService {
 
     }
 
+    /**
+     * @param id id объявления
+     * @param createOrUpdateAdDto заголовок,цена, описание
+     * @param name email
+     * @return объявление
+     */
     @Override
     public Ads updateAds(Integer id, CreateOrUpdateAdDto createOrUpdateAdDto, String name) {
         Optional<Ads> optionalAds = adsRepository.findById(id);
-        if (optionalAds.isPresent()) {
-            Ads ads = optionalAds.get();
+        if (optionalAds.isPresent()) { //TODO можно заменить на orElseThrow вместо return null
+            Ads ads = optionalAds.get(); //TODO убрать из метода
             User adOwner = ads.getUser();
             if (userOrAdminService.isUserOrAdmin(name, adOwner)) {
                 log.info("запустился метод обновления объявления");
@@ -141,7 +158,7 @@ public class AdsServiceImpl implements AdsService {
             try {
                 image = imageService.saveImageFile(imageFile);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException(e); //TODO заменить exception вместо RuntimeException
             }
             ads.setImage(image);
             adsRepository.saveAndFlush(ads);
