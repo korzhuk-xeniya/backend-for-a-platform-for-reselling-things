@@ -101,6 +101,7 @@ public class AdsControllerTest {
         adsRepository.save(ads);
     }
 
+
     @AfterEach
     void cleanUp() {
         adsRepository.delete(ads);
