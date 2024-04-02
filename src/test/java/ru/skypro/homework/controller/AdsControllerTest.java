@@ -205,3 +205,4 @@ public class AdsControllerTest {
         repositoryImage.deleteAllByBytes("image".getBytes());
     }
 }
+
